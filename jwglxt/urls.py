@@ -20,9 +20,10 @@ from app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', views.register),
-    path('register_information/', views.register_information),
     path('student_information/', views.student_information),
     path('teacher_information/', views.teacher_information),
     path('login_judge/', views.login_judge),
+    path('register_judge/', views.register_judge),
+    path('register_judge_success/', views.register_judge_success),
     path('', views.login),
 ]
