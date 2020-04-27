@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>index</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="static/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="static/css/reset.css" />
+
+
+</head>
+<body>
+    <div>
+    <h1>注册页面</h1>
+    <form action="/register_information/" method="post">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="姓名" required><br/>
+        <input type="text" name="id" placeholder="学号" required><br/>
+        <input type="password" name="password"  placeholder="密码" required><br>
+        <input type="radio" name="identity" value="student">学生
+        <input type="radio" name="identity" value="teacher">教师<br/>
+        <input type="submit" value="提交">
+    </form>
+    {% if status == 1 %}
+        <p>{{ info }}</p>
+    {% elif status == 2 %}
+        <p>{{ info }}</p>
+    {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+{% load staticfiles %}
+<head>
+    <title>学生页面</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}" />
+</head>
+
+<body>
+    <ul>
+        <li>
+            姓名：{{ student.student_name }}
+            学号：{{ student.student_id }}
+            学院：{{ student.student_college }}
+            年龄：{{ student.student_age }}
+        </li>
+    </ul>
+</body>
+</html>

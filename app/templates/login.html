@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+{% load staticfiles %}
+<head>
+    <title>登录页</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}" />
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<section>
+
+    <div>
+        <h3>登录</h3><br>
+        <form action="/login_judge/" method="post">
+            {% csrf_token %}
+            账号：<input type="text" name="account"  placeholder="账号" required><br>
+            密码：<input type="password" name="password"  placeholder="密码" required><br>
+            <input type="radio" name="identity" value="student">学生
+            <input type="radio" name="identity" value="teacher">教师<br>
+            <input type="submit" value="登录">
+        </form>
+        <form action="/register/" method="post">
+            {% csrf_token %}
+            <input type="submit" value="注册">
+        </form>
+        {% if status == 1 %}
+            <p>{{ info }}</p>
+        {% elif status == 2 %}
+            <p>{{ info }}</p>
+        {% endif %}
+    </div>
+</section>
+</body>
+</html>
