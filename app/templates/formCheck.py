@@ -50,24 +50,23 @@ def check_id(idnum: str) -> int:
     elif len(idnum) > 10:
         return "学工号太长"
     return ""
-'''
-def check_email(email: str) -> int:
-    if not email.endswith('.com'):
-        return Illegal_Char
-    email_sep = email[:-4].split('@')
-    if len(email_sep) != 2:
-        return Illegal_Char
 
+def check_email(email: str) -> int:
+    if not (email.endswith('.com') or email.endswith('.cn') or email.endswith('.net')):
+        return "邮箱要以.com .cn .net结尾"
+    email_sep = email[:-4].split('@')
+    if len(emial_sep) != 2:
+        return "邮箱只能包含一个@"
     ch: str
     for ch in email_sep[0]:
-        if ch.isdigit() or ch.isalpha() or ch == '_':
+        if ch.isdigit() or ch.isupper() or ch.islower() or ch == '_':
             continue
-        return  Illegal_Char
-    if (not email_sep[1][0].isalnum()) or email_sep[1][-1] == '.':
-        return Illegal_Char
+        return "@前只能包含字母 下划线 和数字"
+    if (not (email_sep[1][0].islower() or email_sep[1][0].isupper() or email_sep[1][0].isdigit())) or email_sep[1][-1] == '.':
+        return "邮箱后缀格式非法"
     for index, ch in enumerate(email_sep[1]):
-        if ch.isalnum() or (ch == '.' and email_sep[1][index-1] != '.'):
+        if ch.isupper() or ch.islower() or ch.isdigit() or (ch == '.' and email_sep[1][index-1] != '.'):
             continue
-        return Illegal_Char
+        return "邮箱后缀包含非法字符"
     return ""
-'''
+

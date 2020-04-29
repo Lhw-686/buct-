@@ -16,6 +16,8 @@ def login(request):
     context = {
         "isNoAccount": False,
         "isPasswordWrite": False,
+        "checkedStudent": True,
+        "error": False,
     }
     return render(request, 'login.html', context=context)
 
@@ -55,10 +57,15 @@ def login_judge(request):
             context = {
                 "isNoAccount": False,
                 "isPasswordWrite": True,
-                "pwdWrong": "密码错误请重新输入",
+                "pwdWrong": "密码错误, 请重新输入!",
                 "pwd": user_password,
                 "Account": user_account,
+                "error": True,
             }
+            if user_identity == 'student':
+                context['checkedStudent'] = True
+            elif user_identity == 'teacher':
+                context['checkedStudent'] = False
             return render(request, 'login.html', context=context)
         pass
     else:
@@ -66,10 +73,15 @@ def login_judge(request):
         context = {
             "isNoAccount": True,
             "isPasswordWrite": False,
-            "noAccount": "此账户不存在",
+            "noAccount": "此账户不存在, 请检查是否输入有误！",
             "pwd": user_password,
             "Account": user_account,
+            "error": True,
         }
+        if user_identity == 'student':
+            context['checkedStudent'] = True
+        elif user_identity == 'teacher':
+            context['checkedStudent'] = False
         return render(request, 'login.html', context=context)
     return HttpResponse("404")
 
@@ -83,10 +95,9 @@ def register(request):
     context = {
         "isPasswordError": False,
         "isAccountError": False,
-        "isIdError": False,
         "isEmailError": False,
         "isPhoneError": False,
-        "checkedM": "chencked"
+        "checkedStudent": True,
     }
     return render(request, 'register.html', context=context)
 def register_judge(request):
@@ -104,18 +115,19 @@ def register_judge(request):
         'phone': user_phone,
         'isPasswordError': False,
         'isAccountError': False,
-        'IsEmailError': False,
+        'isEmailError': False,
         'isPhoneError': False,
         'PasswordError': check_pwd(user_password),
         'AccountError': check_id(user_account),
-        'EmailError': "", #Django会自动检查邮箱
+        'EmailError': check_email(user_email),
         'PhoneError': check_phone(user_phone),
+        'checkedStudent': True,
     }
 
     if user_identity == 'student':
-        context['checkedStudent'] = 'checked'
+        context['checkedStudent'] = True
     elif user_identity == 'teacher':
-        context['checkedTeacher'] = 'checked'
+        context['checkedStudent'] = False
     #检查合法性
     islegal = True
     if context['PasswordError'] != "":
@@ -127,46 +139,42 @@ def register_judge(request):
     if context['PhoneError'] != "":
         islegal = False
         context['isPhoneError'] = True
+    if context['EmailError'] != "":
+        islegal = False
+        context['isEmailError'] = True
     if not islegal:
         return render(request, "register.html", context=context)
 
     search_from_User = User.objects.filter(account=user_account, identity=user_identity)
+
     if len(search_from_User) > 0:
-        context['isAccountError'] = True
-        context['AccountError'] = ("该账号已存在了")
+        for item in search_from_User:
+            if user_account == item.account:
+                context['isAccountError'] = True
+                context['AccountError'] = "该账号已存在了"
+        return render(request, "register.html", context=context)
+    search_from_User2 = User.objects.filter(Q(phone=user_phone)|Q(email=user_email))
+    if len(search_from_User2) > 0:
+        print(len(search_from_User2))
+        for item in search_from_User2:
+            if user_phone == item.phone:
+                context['isPhoneError'] = True
+                context['PhoneError'] = '该手机号已被注册'
+            if user_email == item.email:
+                context['isEmailError'] = True
+                context['EmailError'] = '该邮箱已被注册'
         return render(request, "register.html", context=context) ############
-    del search_from_User
+
     user = None
     student = None
     teacher = None
     if user_identity == "student":
-        search_from_Student = Student.objects.filter(Q(student_phone=user_phone)|Q(student_email=user_email))
-        if len(search_from_Student) > 0:
-            for item in search_from_Student:
-                if user_phone == item.student_phone:
-                    context['isPhoneError'] = True
-                    context['PhoneError'] = '该手机号已被注册'
-                if user_email == item.student_email:
-                    context['isEmailError'] = True
-                    context['EmailError'] = '该邮箱已被注册'
-            return render(request, "register.html", context=context)
-        user = User.objects.create(account=user_account, password=user_password, identity=user_identity)
-        student = Student.objects.create(student_id=user_account, student_phone=user_phone, student_email=user_email)
+        user = User.objects.create(account=user_account, password=user_password, identity=user_identity, phone=user_phone, email=user_email)
+        student = Student.objects.create(student_id=user_account)
 
     elif user_identity == "teacher":
-        search_from_Teacher = Teacher.objects.filter(Q(teacher_phone=user_phone)|Q(teacher_email=user_email))
-        if len(search_from_Teacher) > 0:
-            for item in search_from_Teacher:
-                if user_email == item.teacher_email:
-                    context['isEmailError'] = True
-                    context['EmailError'] = '该邮箱已被注册'
-                if user_phone == item.teacher_phone:
-                    context['isPhoneError'] = True
-                    context['PhoneError'] = '该手机号已被注册'
-
-            return render(request, "register.html", context=context)
-        user = User.objects.create(account=user_account, password=user_password, identity=user_identity)
-        teacher = Teacher.objects.create(teacher_id=user_account, teacher_phone=user_phone, teacher_email=user_email)
+        user = User.objects.create(account=user_account, password=user_password, identity=user_identity, phone=user_phone, email=user_email)
+        teacher = Teacher.objects.create(teacher_id=user_account)
     user.save()
     if student:
         student.save()

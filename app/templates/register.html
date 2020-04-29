@@ -2,39 +2,95 @@
 <html>
 
 <head>
-    <title>index</title>
+    {% load staticfiles %}
+    <title>欢迎注册北京化工大学教务管理系统</title>
     <meta charset="utf-8"/>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div class="registerbox">
-        <h3>用户注册</h3>
-        <form method="post" action="/register_judge/">
-            {% csrf_token %}
-            账号(学号/工号) <input type="text" value="{{ Account }}" name="account" placeholder="账号" required>
-            {% if isAccountError %}
-                {{ AccountError }}
-            {% endif %}
-            <br/>
-            密码 <input type="password" value="{{ pwd }}" name="password" placeholder="密码" required>
-            {% if isPasswordError %}
-                {{ PasswordError }}
-            {% endif %}
-            <br/>
-            邮箱 <input type="email" value="{{ email }}" name="email" placeholder="邮箱" required>
-            {% if isEmailError %}
-                {{ EmailError }}
-            {% endif %}
-            <br/>
-            手机号 <input type="text" value="{{ phone }}" name="phone" placeholder="手机号" required>
-            {% if isPhoneError %}
-                {{ PhoneError }}
-            {% endif %}
-            <br/>
-            <input type="radio" name="identity" value="student" checked="{{ checkedStudent }}"><label for="0">学生</label>
-            <input type="radio" name="identity" value="teacher" checked="{{ checkedTeacher }}"><label for="1">教师</label>
-            <input type="submit" value="注册"><a href="/"><input type="button" value="返回"></a>
-
-        </form>
+<div class="container">
+    <div class="row" style="margin-top: 30px">
+        <div style="col-sm-8">
+            <img src="{% static 'image/logo_jw_d.png' %}" style="margin-top: -3px">
+            <span style="font-size: 24px; color: rgb(16, 105, 164); margin-left: 10px">
+                北京化工大学教务管理系统
+            </span>
+        </div>
+        <div class="col-sm-4"></div>
     </div>
+    <div class="row" style="margin-top: 20px; background-color: white">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <form action="/register_judge/" method="post">
+                {% csrf_token %}
+                <h3 style="text-align: center;">欢迎注册北京化工大学教务管理系统</h3>
+                <div class="form-group form-inline " style="margin-left: 100px; margin-top: 50px">
+                    <span class="glyphicon glyphicon-user" style="margin-right: 20px; font-size: 24px; vertical-align: middle"></span>
+                    <input type="text" name="account" value="{{ Account }}" class="form-control" style="width: 300px" placeholder="学号" autocomplete="off" required>
+                </div>
+                {% if isAccountError%}
+                    <div style="border: 1px solid #f4a2a2; line-height: 24px; margin-left: 150px; margin-right: 300px">
+                        <span class="glyphicon glyphicon-minus-sign" style="color: red; margin-right: 5px; padding-left: 10px;"></span>
+                        <span style="color: black; font-size: 12px">{{ AccountError }}</span>
+                    </div>
+                {% endif %}
+                <div class="form-group form-inline " style="margin-left: 100px; margin-top: 25px">
+                    <span class="glyphicon glyphicon-lock" style="margin-right: 20px; font-size: 24px; vertical-align: middle"></span>
+                    <input type="password" name="password" value="{{ pwd }}" class="form-control" style="width: 300px" placeholder="密码" autocomplete="off" required>
+                </div>
+                {% if isPasswordError%}
+                    <div style="border: 1px solid #f4a2a2; line-height: 24px; margin-left: 150px; margin-right: 300px">
+                        <span class="glyphicon glyphicon-minus-sign" style="color: red; margin-right: 5px; padding-left: 10px"></span>
+                        <span style="color: black; font-size: 12px">{{ PasswordError }}</span>
+                    </div>
+                {% endif %}
+                <div class="form-group form-inline" style="margin-left: 100px; margin-top: 25px">
+                    <span class="glyphicon glyphicon-tag" style="font-size: 24px; vertical-align: middle">
+                    <select class="form-control" name="identity" style="width: 300px" >
+                        {% if checkedStudent %}
+                            <option value="student" selected>学生</option>
+                            <option value="teacher">教师</option>
+                        {% else %}
+                            <option value="student">学生</option>
+                            <option value="teacher" selected>教师</option>
+                        {% endif %}
+                    </select>
+                    </span>
+                </div>
+                <div class="form-group form-inline" style="margin-left: 100px; margin-top: 25px">
+                    <span class="glyphicon glyphicon-phone" style="margin-right: 20px; font-size: 24px; vertical-align: middle"></span>
+                    <input type="tel" class="form-control" name="phone" value="{{ phone }}" style="width: 300px" placeholder="手机号码" autocomplete="off" required>
+                </div>
+                {% if isPhoneError%}
+                    <div style="border: 1px solid #f4a2a2; line-height: 24px; margin-left: 150px; margin-right: 300px">
+                        <span class="glyphicon glyphicon-minus-sign" style="color: red; margin-right: 5px; padding-left: 10px"></span>
+                        <span style="color: black; font-size: 12px">{{ PhoneError }}</span>
+                    </div>
+                {% endif %}
+                <div class="form-group form-inline" style="margin-left: 100px; margin-top: 25px">
+                    <span class="glyphicon glyphicon-envelope" style="margin-right: 20px; font-size: 24px; vertical-align: middle"></span>
+                    <input type="email" class="form-control" name="email" value="{{ email }}" style="width: 300px" placeholder="邮箱地址" autocomplete="off" required>
+                </div>
+                {% if isEmailError %}
+                    <div style="border: 1px solid #f4a2a2; line-height: 24px; margin-left: 150px; margin-right: 300px">
+                        <span class="glyphicon glyphicon-minus-sign" style="color: red; margin-right: 5px; padding-left: 10px"></span>
+                        <span style="color: black; font-size: 12px">{{ EmailError }}</span>
+                    </div>
+                {% endif %}
+                <div class="form-group" style="margin-top: 50px; margin-left: 80px; margin-right: 80px">
+                    <input type="submit" style="width: 250px; float: left" value="注&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp册" class="btn btn-primary btn-block "/>
+                    <a href="/" style="text-decoration: none"><input type="button" style="width: 250px; float: right" value="返&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp回" class="btn btn-primary btn-block"/></a>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+</div>
+<div class="footer" style="padding-top: 60px">
+	<p style="text-align: center; color: rgb(128, 153, 175)">版权所有&copy; Copyright 1999-2017  正方软件股份有限公司　　中国·杭州西湖区紫霞街176号 互联网创新创业园2号301</p>
+</div>
+
 </body>
 </html>

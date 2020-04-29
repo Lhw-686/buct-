@@ -1,30 +1,90 @@
 <!DOCTYPE html>
-<html>
-{% load staticfiles %}
-<head>
-    <title>登录页</title>
-    <meta charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}" />
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
 
+<html>
+<head>
+    {% load staticfiles %}
+   <meta charset="utf-8">
+   <title>北京化工大学教务管理系统</title>
+   <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+   <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+   <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
 <body>
-    <div class="login_box">
-        <h3>用户登录</h3>
-        <form action="/login_judge/" method="post">
-            {% csrf_token %}
-            账号：<input type="text" name="account"  placeholder="账号" value="{{ Account }}" required>
-            {{ noAccount }}<br/>
-            密码：<input type="password" name="password"  placeholder="密码" value="{{ pwd }}" required>
-            {{ pwdWrong }}<br>
-            <input type="radio" name="identity" value="student">学生
-            <input type="radio" name="identity" value="teacher">教师<br>
-            <input type="submit" value="登录">
-            <a href="/register/"><input type="button" value="注册"/></a>
-        </form>
-    </div>
+<div class="container">
+	<div class="row" style="margin-top: 30px">
+		<div class="col-sm-8" >
+			<img src="{% static 'image/logo_jw_d.png' %}" style="margin-top: -3px">
+			<span style="font-size: 24px; color: rgb(16, 105, 164); margin-left: 10px">北京化工大学教务管理系统</span>
+		</div>
+		<div class="col-sm-4 text-right hidden-xs">
+
+		</div>
+	</div>
+	<div class="row" style="background-color: rgb(245, 245, 245); margin-top: 50px">
+		<div class="col-sm-8" style="background-color: rgb(245, 245, 245)">
+			<img src="{% static 'image/login_bg_pic.jpg' %}" style="padding-top: 5px; padding-bottom: 5px"/>
+		</div>
+		<div class="col-sm-4" style="background-color: rgb(245, 245, 245)">
+			<div>
+				<div class="tab-content" style="background-color: white">
+					<form action="/login_judge/" method="post">
+						{% csrf_token %}
+						<h5 style="font-weight: bolder; padding-top: 20px; padding-left: 15px; font-size: 15px; margin-bottom: 20px">用户登录</h5>
+                        {% if error %}
+                            <div class="bg-danger" style="margin-left: 20px; margin-right: 20px; background-color: white; border: 1px solid #f4a2a2; line-height: 24px; margin-bottom: 10px">
+                                <span class="glyphicon glyphicon-minus-sign" style=" color: red; margin-right: 5px; padding-left: 10px; " ></span>
+                                <span style="color: black; font-size: 12px" >{{ noAccount }}{{ pwdWrong }}</span>
+                            </div>
+                        {% endif %}
+						<input type="text" style="display: none;" autocomplete="off">
+						<input type="password" style="display: none" autocomplete="off">
+						<div class="form-group" >
+							<div class="input-group" style="margin-left: 30px">
+								<div class="input-group-addon" style="background-color: white"><img src="{% static 'image/log_ic01.png' %}" width="16" height="16"/></div>
+								<input type="text" name="account" value="{{ Account }}" class="form-control" style="padding-left: 10px; width: 258px; height: 32px" onblur="" placeholder="用户名" autocomplete="off" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="input-group" style="margin-left: 30px">
+								<div class="input-group-addon" style="background-color: white"><img src="{% static 'image/log_ic02.png' %}" width="16" height="16"></div>
+								<input type="password" style="display: none">
+								<input type="text" name="password"  required class="form-control" style="padding-left: 10px; width: 258px; height: 32px" placeholder="密码" onfocus="this.type='password'">
+								<input type="password" style="display: none">
+							</div>
+						</div>
+						<div class="from-group">
+							<div class="form-group" style="margin-left: 30px; margin-right: 30px">
+								<select name="identity" class="form-control">
+									{% if checkedStudent %}
+										<option value="student" selected>学 生</option>
+										<option value="teacher">教 师</option>
+									{% else %}
+										<option value="student">学 生</option>
+										<option value="teacher" selected>教 师</option>
+									{% endif %}
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<a href="#" target="_blank" class="checkbox pull-right" style="padding-right: 30px">忘记密码了？</a>
+						</div>
+						<div class="form-group" style="background-color: white; padding-left: 30px; padding-right: 30px; padding-bottom: 6px">
+							<button type="submit" value="login" class="btn btn-primary btn-block"">登&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp录</button>
+						</div>
+						<div class="form-group" style="background-color: white; padding-left: 30px; padding-right: 30px; padding-bottom: 40px; ">
+							<a href="/register/"><button type="button" class="btn btn-primary btn-block">注&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp册</button></a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="footer" style="padding-top: 20px">
+	<p style="text-align: center; color: rgb(128, 153, 175)">版权所有&copy; Copyright 1999-2017  正方软件股份有限公司　　中国·杭州西湖区紫霞街176号 互联网创新创业园2号301</p>
+</div>
+
+
 </body>
+
 </html>

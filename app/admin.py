@@ -7,8 +7,8 @@ class StudentAdmin(admin.ModelAdmin):
                     'student_sex', 'student_nation', 'student_political_status',
                     'student_come_year', 'student_college', 'student_major',
                     'student_class', 'student_province', 'student_city',
-                    'student_birthday', 'student_phone', 'student_qq',
-                    'student_wechat', 'student_email', 'student_high_school',
+                    'student_birthday',  'student_qq',
+                    'student_wechat',  'student_high_school',
                     'student_foreign_language', 'student_status'
                     ]
 
@@ -17,8 +17,8 @@ class TeacherAdmin(admin.ModelAdmin):
                     'teacher_sex', 'teacher_nation', 'teacher_political_status',
                     'teacher_department', 'teacher_academic_title', 'teacher_degree',
                     'teacher_come_year', 'teacher_province', 'teacher_city',
-                    'teacher_birthday', 'teacher_phone', 'teacher_qq',
-                    'teacher_wechat', 'teacher_email', 'teacher_graduate_school'
+                    'teacher_birthday', 'teacher_qq',
+                    'teacher_wechat', 'teacher_graduate_school'
                     ]
 
 class CourseAdmin(admin.ModelAdmin):
@@ -50,7 +50,7 @@ class SelectListAdmin(admin.ModelAdmin):
     list_display = ['major', 'term', 'course_id', 'status']
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['account', 'identity', 'password']
+    list_display = ['account', 'identity', 'password', 'phone', 'email']
 
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Teacher, TeacherAdmin)

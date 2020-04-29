@@ -53,7 +53,7 @@ class Student(models.Model):
 
     '''学生信息表'''
 
-    student_id = models.CharField(max_length=20, verbose_name='学号', primary_key=True, unique=True)
+    student_id = models.CharField(max_length=20, verbose_name='学号', primary_key=True, unique=True, db_index=True)
     student_name = models.CharField(max_length=20, verbose_name='姓名', null=True)
     student_age = models.PositiveSmallIntegerField(verbose_name='年龄', null=True)
     student_sex = models.CharField(max_length=20, choices=sex, default='男', verbose_name='性别', null=True)
@@ -66,10 +66,10 @@ class Student(models.Model):
     student_province = models.CharField(max_length=20, verbose_name='省份', null=True)
     student_city = models.CharField(max_length=20, verbose_name='城市', null=True)
     student_birthday = models.DateField(verbose_name='出生日期', null=True)
-    student_phone = models.CharField(max_length=20, verbose_name='手机号码', null=True)
+    #student_phone = models.CharField(max_length=20, verbose_name='手机号码', null=True)
     student_qq = models.CharField(max_length=20, verbose_name='QQ号码', null=True)
     student_wechat = models.CharField(max_length=20, verbose_name='微信号码', null=True)
-    student_email = models.EmailField(verbose_name='邮件地址', null=True)
+    #student_email = models.EmailField(verbose_name='邮件地址', null=True)
     student_high_school = models.CharField(max_length=20, verbose_name='毕业高中', null=True)
     student_foreign_language = models.CharField(max_length=20, choices=language, default='英语', verbose_name='外语', null=True)
     student_status = models.CharField(max_length=20, choices=status, default='在读', verbose_name='状态', null=True)
@@ -83,7 +83,7 @@ class Teacher(models.Model):
 
     '''教师信息表'''
 
-    teacher_id = models.CharField(max_length=20, verbose_name='工号', primary_key=True, unique=True)
+    teacher_id = models.CharField(max_length=20, verbose_name='工号', primary_key=True, unique=True, db_index=True)
     teacher_name = models.CharField(max_length=20, verbose_name='姓名', null=True)
     teacher_age = models.PositiveSmallIntegerField(verbose_name='年龄', null=True)
     teacher_sex = models.CharField(max_length=20, choices=sex, default='男', verbose_name='性别', null=True)
@@ -96,10 +96,10 @@ class Teacher(models.Model):
     teacher_province = models.CharField(max_length=20, verbose_name='省份', null=True)
     teacher_city = models.CharField(max_length=20, verbose_name='城市', null=True)
     teacher_birthday = models.DateTimeField(verbose_name='出生日期', null=True) #去掉time
-    teacher_phone = models.CharField(max_length=20, verbose_name='手机号码', null=True)
+    #teacher_phone = models.CharField(max_length=20, verbose_name='手机号码', null=True)
     teacher_qq = models.CharField(max_length=20, verbose_name='QQ号码', null=True)
     teacher_wechat = models.CharField(max_length=20, verbose_name='微信号码', null=True)
-    teacher_email = models.EmailField(verbose_name='邮件地址', null=True)
+    #teacher_email = models.EmailField(verbose_name='邮件地址', null=True)
     teacher_graduate_school = models.CharField(max_length=20, verbose_name='毕业院校', null=True)
 
     class Meta:
@@ -108,7 +108,7 @@ class Teacher(models.Model):
 
 class Course(models.Model):
     '''课程信息表'''
-    course_id = models.CharField(max_length=20, verbose_name='课程号', primary_key=True, unique=True)
+    course_id = models.CharField(max_length=20, verbose_name='课程号', primary_key=True, unique=True, db_index=True)
     course_name = models.CharField(max_length=20, verbose_name='课程名', unique=True)
     course_status = models.CharField(max_length=20, verbose_name='课程状态')
     course_college = models.CharField(max_length=20, choices=college, default='信息科学与技术', verbose_name='开课学院')
@@ -159,7 +159,7 @@ class SchoolTerm(models.Model):
 
 class Message(models.Model):
     '''消息表'''
-    message_id = models.CharField(max_length=20, verbose_name='消息号', primary_key=True, unique=True)
+    message_id = models.CharField(max_length=20, verbose_name='消息号', primary_key=True, unique=True, db_index=True)
     student_id = models.ForeignKey(Student, on_delete=models.DO_NOTHING, verbose_name='学号')
     message_content = models.CharField(max_length=1000, verbose_name='消息内容')
     message_send_time = models.DateTimeField(auto_now_add=True, verbose_name='发送日期')
@@ -172,7 +172,7 @@ class Message(models.Model):
 
 class Notice(models.Model):
     '''公告表'''
-    notice_id = models.CharField(max_length=20, verbose_name='通知号', primary_key=True, unique=True)
+    notice_id = models.CharField(max_length=20, verbose_name='通知号', primary_key=True, unique=True, db_index=True)
     notice_send_time = models.DateTimeField(auto_now_add=True, verbose_name='发送日期')
     notice_content = models.CharField(max_length=1000, verbose_name='通知内容')
     notice_title = models.CharField(max_length=255, verbose_name='通知标题')
@@ -197,7 +197,9 @@ class User(models.Model):
     '''用户登录表'''
     account = models.CharField(max_length=20, verbose_name='账号')
     identity = models.CharField(max_length=20, choices=ident, default='学生', verbose_name='身份')
-    password = models.SlugField(verbose_name='密码')
+    password = models.CharField(max_length=32, verbose_name='密码')
+    phone = models.CharField(max_length=11, verbose_name='手机号码', unique=True)
+    email = models.EmailField(verbose_name='邮件地址', unique=True)
 
     class Meta:
         verbose_name = '用户登录表'
