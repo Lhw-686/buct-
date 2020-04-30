@@ -188,8 +188,34 @@ def register_judge_success(request):
 
 def student_index(request):
     return render(request, 'student/student_index.html')
-def student_information_fix(request):
-    return render(request, 'student/student_information_fix.html')
+def student_information_fix(request, id):
+    is_fix = False
+    student = Student.objects.get(student_id=id)
+    user = User.objects.get(account=id)
+    return render(request, 'student/student_information_fix.html', {'student': student, 'user': user, 'is_fix': is_fix})
+
+def student_submit_fix(request):
+    id = request.POST['id']
+    user = User.objects.get(account=id)
+    student = Student.objects.get(student_id=id)
+    ifmt = request.POST['ifmt']
+    fix = request.POST['fix']
+    is_fix = True
+    if ifmt == 'name':
+        student.student_name = fix
+    elif ifmt == 'phone':
+        user.phone = fix
+    elif ifmt == 'wechat':
+        student.student_wechat = fix
+    elif ifmt == 'email':
+        user.email = fix
+    elif ifmt == 'qq':
+        student.student_qq = fix
+    elif ifmt == 'political_status':
+        student.student_political_status = fix
+    user.save()
+    student.save()
+    return render(request, 'student/student_information_fix.html', {'student': student, 'user': user, 'is_fix': is_fix})
 
 
 

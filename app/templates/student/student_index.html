@@ -57,7 +57,7 @@
                 </a>
                 <ul class="dropdown-menu" role="menu">
                     <li>
-                        <a href="/student_information_fix/" target="_blank">学生个人信息维护</a>
+                        <a href="{% url 'fix' student.student_id %}" target="_blank" >学生个人信息维护</a>
                     </li>
                 </ul>
             </li>
@@ -91,7 +91,7 @@
                     </h3>
                     <ul style="list-style: none; height: 502px; padding: 15px 0px;">
                         <li class="col-md-4 col-sm-4 col-xs-6" style="text-align: center; font-size: 14px">
-                            <a href="/student_information_fix/" style="text-decoration: none" target="_blank" title="个人信息维护">
+                            <a href="/student_information_fix/" name="" style="text-decoration: none" target="_blank" title="个人信息维护">
                                 <img src="{% static 'image/xinxiweihu.png' %}" style="min-height: 48px; vertical-align: middle" alt="个人信息维护">
                                 <h5 style="height: 60px; font-size: 14px; padding: 0px 0px 15px 0px; color: black">个人信息维护</h5>
                             </a>

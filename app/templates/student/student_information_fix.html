@@ -21,6 +21,8 @@
             font-weight: bold;
             font-size: 15px;
             padding: 5px;
+            line-height: 50px;
+            display: inline;
         }
         ul {
             list-style: none;
@@ -30,7 +32,15 @@
         }
     </style>
 </head>
+
 <body class="body-container">
+{% if is_fix %}
+    <script>
+        window.onload=function(){
+            alert("修改成功！");
+        }
+    </script>
+{% endif %}
     <div style="background: #0483d4; border: 1px solid #e7e7e7;line-height: 60px">
         <img src="{% static 'image/logo_jw_w2.png' %}" style="padding-left: 80px">
         <span style="color: white; font-size: 25px; vertical-align: middle">学生个人信息维护</span>
@@ -41,11 +51,11 @@
             <div class="col-md-12" style="border-bottom: 1px solid #eeeeee; font-weight: bold; font-size: 20px; padding: 5px; line-height: 80px;">
                 <div class="col-md-4" style="padding-right: 55px; padding-left: 55px; color: #4f81af">
                     <span>学号:</span>
-                    <span></span>
+                    <span> {{ student.student_id }}</span>
                 </div>
                 <div class="col-md-4" style="padding-right: 55px; padding-left: 55px; color: #4f81af">
                     <span>姓名:</span>
-                    <span></span>
+                    <span>{{ student.student_name }}</span>
                 </div>
                 <div class="col-md-4" ></div>
             </div>
@@ -53,31 +63,31 @@
                 <ul>
                     <li>
                         <h4>学号:</h4>
-                        <span></span>
+                        <span>{{ student.student_id }}</span>
                     </li>
                     <li>
                         <h4>性别:</h4>
-                        <span></span>
+                        <span>{{ student.get_student_sex_display }}</span>
                     </li>
                     <li>
                         <h4>学院:</h4>
-                        <span></span>
+                        <span>{{ student.get_student_college_display }}</span>
                     </li>
                     <li>
                         <h4>手机号码:</h4>
-                        <span></span>
+                        <span>{{ user.phone }}</span>
                     </li>
                     <li>
                         <h4>入学日期:</h4>
-                        <span></span>
+                        <span>{{ student.student_come_year }}</span>
                     </li>
                     <li>
                         <h4>省份:</h4>
-                        <span></span>
+                        <span>{{ student.student_province }}</span>
                     </li>
                     <li>
                         <h4>出生日期:</h4>
-                        <span></span>
+                        <span>{{ student.student_birthday }}</span>
                     </li>
                 </ul>
             </div>
@@ -85,31 +95,31 @@
                 <ul>
                     <li>
                         <h4>姓名:</h4>
-                        <span></span>
+                        <span>{{ student.student_name }}</span>
                     </li>
                     <li>
                         <h4>民族:</h4>
-                        <span></span>
+                        <span>{{ student.get_student_nation_display }}</span>
                     </li>
                     <li>
                         <h4>专业:</h4>
-                        <span></span>
+                        <span>{{ student.student_major }}</span>
                     </li>
                     <li>
                         <h4>邮件地址:</h4>
-                        <span></span>
+                        <span>{{ user.email }}</span>
                     </li>
                     <li>
                         <h4>状态:</h4>
-                        <span></span>
+                        <span>{{ student.get_student_status_display }}</span>
                     </li>
                     <li>
                         <h4>城市:</h4>
-                        <span></span>
+                        <span>{{ student.student_city }}</span>
                     </li>
                     <li>
                         <h4>微信号码:</h4>
-                        <span></span>
+                        <span>{{ student.student_wechat }}</span>
                     </li>
                 </ul>
             </div>
@@ -117,45 +127,47 @@
                 <ul>
                     <li>
                         <h4>年龄:</h4>
-                        <span></span>
+                        <span>{{ student.student_age }}</span>
                     </li>
                     <li>
                         <h4>政治面貌:</h4>
-                        <span></span>
+                        <span>{{ student.get_student_political_status_display }}</span>
                     </li>
                     <li>
                         <h4>班级:</h4>
-                        <span></span>
+                        <span>{{ student.student_class }}</span>
                     </li>
                     <li>
                         <h4>外语:</h4>
-                        <span></span>
+                        <span>{{ student.get_student_foreign_language_display }}</span>
                     </li>
                     <li>
                         <h4>毕业高中:</h4>
-                        <span></span>
+                        <span>{{ student.student_high_school }}</span>
                     </li>
                     <li>
                         <h4>QQ号码:</h4>
-                        <span></span>
+                        <span>{{ student.student_qq }}</span>
                     </li>
                 </ul>
             </div>
             <div class="col-md-12" style="border-top: 1px solid #eeeeee; ";>
                 <div class="col-md-4"></div>
                 <div class="col-md-8" style="float: right; margin-top:  20px;">
-                    <form action="" method="post" style="margin-left: 320px;">
+                    <form action="/student_submit_fix/" method="post" style="margin-left: 320px;">
+                        {% csrf_token %}
                         <div class="form-group form-inline">
+                            <input hidden name="id" value="{{ student.student_id }}">
                             <label >修改资料:</label>
-                            <select class="form-control" style="margin-left: 20px;">
-                                <option>姓名</option>
-                                <option>手机号码</option>
-                                <option>微信号码</option>
-                                <option>QQ号码</option>
-                                <option>邮件地址</option>
-                                <option>政治面貌</option>
+                            <select class="form-control" name="ifmt" style="margin-left: 20px;">
+                                <option  value="name">姓名</option>
+                                <option  value="phone">手机号码</option>
+                                <option  value="wechat">微信号码</option>
+                                <option  value="qq">QQ号码</option>
+                                <option  value="email">邮件地址</option>
+                                <option  value="political_status">政治面貌</option>
                             </select>
-                            <input type="text" style="margin-left: 10px;" class="form-control" placeholder="请输入您要修改的内容" autocomplete="off" required >
+                            <input type="text" style="margin-left: 10px;" name="fix" class="form-control" placeholder="请输入您要修改的内容" autocomplete="off" required >
                             <button type="submit" style="margin-left: 10px;" class="btn btn-default" >提 交 修 改</button>
                         </div>
                     </form>
