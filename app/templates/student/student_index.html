@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     {% load staticfiles %}
     <meta charset="utf-8">
@@ -25,7 +24,7 @@
         <div>
             <img src="{% static 'image/logo_jw_w2.png' %}" style="padding-left: 80px"/>
             <span style="color: white; font-size: 25px; vertical-align: middle">北京化工大学教务管理系统</span>
-            <a href="#">
+            <a href="/">
                 <button onmouseover="this.style.backgroundColor='rgb(104,181,229)'" onmouseout="this.style.backgroundColor='#0483d4'" class="button" style="outline:none; float: right; color: white; background-color: #0483d4; height: 60px; border: 0px solid transparent; margin-right: 40px;">
                     <img src="{% static 'image/user_logo.jpg' %}" class="img-circle" width="40" height="40" style="padding: 5px"/>
                     <span class="glyphicon glyphicon-log-out" style="color: white; padding: 5px"></span>
@@ -36,7 +35,6 @@
     </div>
     <!--top_end-->
     <div class="line">
-
         <ul class="nav navbar-nav" role="tablist" style="margin-left: 100px;" >
             <li class="active" >
                 <a href="#" style="color: black">主页</a>
@@ -59,7 +57,7 @@
                 </a>
                 <ul class="dropdown-menu" role="menu">
                     <li>
-                        <a href="#">学生个人信息维护</a>
+                        <a href="/student_information_fix/" target="_blank">学生个人信息维护</a>
                     </li>
                 </ul>
             </li>
@@ -91,9 +89,9 @@
                     <h3 style="height: 42px; border-bottom: 1px solid #eeeeee;">
                         <span style="color: black; font-size: 15px; font-weight: bolder;padding-left: 15px;">我的应用</span>
                     </h3>
-                    <ul style="list-style: none; height: 350px; padding: 15px 0px;">
+                    <ul style="list-style: none; height: 502px; padding: 15px 0px;">
                         <li class="col-md-4 col-sm-4 col-xs-6" style="text-align: center; font-size: 14px">
-                            <a href="#" style="text-decoration: none" target="_blank" title="个人信息维护">
+                            <a href="/student_information_fix/" style="text-decoration: none" target="_blank" title="个人信息维护">
                                 <img src="{% static 'image/xinxiweihu.png' %}" style="min-height: 48px; vertical-align: middle" alt="个人信息维护">
                                 <h5 style="height: 60px; font-size: 14px; padding: 0px 0px 15px 0px; color: black">个人信息维护</h5>
                             </a>
@@ -131,11 +129,12 @@
                                             <img src="{% static 'image/me.jpg' %}"  class="media-object" alt="110*110" style="width: 110px; height: 110px; float: left; border-radius: 55px; margin: 20px 10px 20px 5px; display: block; vertical-align: middle; border: 0px;">
                                         </a>
                                         <div class="media-body" style="margin-top: 20px; display: table-cell; vertical-align: top;  overflow: hidden; zoom: 1;">
-                                            <h4 class="media-heading" style="font-weight: bold; font-size: 15px; padding: 5px;" >李宏伟</h4>
-                                            <p style="color: #7a7a7a; font: normal 11px/22px SimSun; padding-left: 5px;">信息科学与技术学院 数据1802</p>
+                                            <h4 class="media-heading" style="font-weight: bold; font-size: 15px; padding: 5px;" >{{ student.student_name }}</h4>
+                                            <p style="color: #7a7a7a; font: normal 11px/22px SimSun; padding-left: 5px;">{{ student.get_student_college_display}} {{ student.student_class }}</p>
                                         </div>
                                     </div>
                                 </div>
+                                <!--姓名栏over-->
                                 <div class="col-md-7" style="height: 150px; padding-left: 10px; padding-right: 10px; float: left;">
                                     <div style="position: relative; overflow: hidden; height: 100%; max-width: 100%; outline: 0; direction: ltr; display: block; overflow-y: scroll;">
                                         <style>
@@ -344,5 +343,6 @@
     <div class="footer" style="text-align: center; color: white; font: normal 12px/20px SimSun; margin: 15px 0 0; background-color: #0483d4; padding: 10px; display: block; box-sizing: border-box;">
         版权所有© Copyright 1999-2020 正方软件股份有限公司　　中国·杭州西湖区紫霞街176号 互联网创新创业园2号301
     </div>
+    <!--底部over-->
 </body>
 </html>

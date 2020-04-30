@@ -184,10 +184,12 @@ def register_judge(request):
 
 
 def register_judge_success(request):
-    return (request, "registerSuccess.html")
+    return render(request, "registerSuccess.html")
 
 def student_index(request):
-    return (request, 'student/student_index')
+    return render(request, 'student/student_index.html')
+def student_information_fix(request):
+    return render(request, 'student/student_information_fix.html')
 
 
 

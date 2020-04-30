@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load staticfiles %}
+    <meta charset="utf-8"/>
+    <title>学生个人信息维护</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body{
+            background-color: rgb(240, 240, 240);
+        }
+        .line{
+            width: 100%;
+            margin: 0px;
+            background-color: white;
+            height: 50px;
+        }
+        h4 {
+            font-weight: bold;
+            font-size: 15px;
+            padding: 5px;
+        }
+        ul {
+            list-style: none;
+        }
+        li {
+            padding: 5px;
+        }
+    </style>
+</head>
+<body class="body-container">
+    <div style="background: #0483d4; border: 1px solid #e7e7e7;line-height: 60px">
+        <img src="{% static 'image/logo_jw_w2.png' %}" style="padding-left: 80px">
+        <span style="color: white; font-size: 25px; vertical-align: middle">学生个人信息维护</span>
+    </div>
+    <!--top_end-->
+    <div class="container" style="margin-left: 70px; margin-top: 1px; padding: 0px; margin-right: 70px; width: auto">
+        <div class="row" style="background: white; margin-top: 15px;">
+            <div class="col-md-12" style="border-bottom: 1px solid #eeeeee; font-weight: bold; font-size: 20px; padding: 5px; line-height: 80px;">
+                <div class="col-md-4" style="padding-right: 55px; padding-left: 55px; color: #4f81af">
+                    <span>学号:</span>
+                    <span></span>
+                </div>
+                <div class="col-md-4" style="padding-right: 55px; padding-left: 55px; color: #4f81af">
+                    <span>姓名:</span>
+                    <span></span>
+                </div>
+                <div class="col-md-4" ></div>
+            </div>
+            <div class="col-md-4" >
+                <ul>
+                    <li>
+                        <h4>学号:</h4>
+                        <span></span>
+                    </li>
+                    <li>
+                        <h4>性别:</h4>
+                        <span></span>
+                    </li>
+                    <li>
+                        <h4>学院:</h4>
+                        <span></span>
+                    </li>
+                    <li>
+                        <h4>手机号码:</h4>
+                        <span></span>
+                    </li>
+                    <li>
+                        <h4>入学日期:</h4>
+                        <span></span>
+                    </li>
+                    <li>
+                        <h4>省份:</h4>
+                        <span></span>
+                    </li>
+                    <li>
+                        <h4>出生日期:</h4>
+                        <span></span>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <ul>
+                    <li>
+                        <h4>姓名:</h4>
+                        <span></span>
+                    </li>
+                    <li>
+                        <h4>民族:</h4>
+                        <span></span>
+                    </li>
+                    <li>
+                        <h4>专业:</h4>
+                        <span></span>
+                    </li>
+                    <li>
+                        <h4>邮件地址:</h4>
+                        <span></span>
+                    </li>
+                    <li>
+                        <h4>状态:</h4>
+                        <span></span>
+                    </li>
+                    <li>
+                        <h4>城市:</h4>
+                        <span></span>
+                    </li>
+                    <li>
+                        <h4>微信号码:</h4>
+                        <span></span>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-4" >
+                <ul>
+                    <li>
+                        <h4>年龄:</h4>
+                        <span></span>
+                    </li>
+                    <li>
+                        <h4>政治面貌:</h4>
+                        <span></span>
+                    </li>
+                    <li>
+                        <h4>班级:</h4>
+                        <span></span>
+                    </li>
+                    <li>
+                        <h4>外语:</h4>
+                        <span></span>
+                    </li>
+                    <li>
+                        <h4>毕业高中:</h4>
+                        <span></span>
+                    </li>
+                    <li>
+                        <h4>QQ号码:</h4>
+                        <span></span>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-12" style="border-top: 1px solid #eeeeee; ";>
+                <div class="col-md-4"></div>
+                <div class="col-md-8" style="float: right; margin-top:  20px;">
+                    <form action="" method="post" style="margin-left: 320px;">
+                        <div class="form-group form-inline">
+                            <label >修改资料:</label>
+                            <select class="form-control" style="margin-left: 20px;">
+                                <option>姓名</option>
+                                <option>手机号码</option>
+                                <option>微信号码</option>
+                                <option>QQ号码</option>
+                                <option>邮件地址</option>
+                                <option>政治面貌</option>
+                            </select>
+                            <input type="text" style="margin-left: 10px;" class="form-control" placeholder="请输入您要修改的内容" autocomplete="off" required >
+                            <button type="submit" style="margin-left: 10px;" class="btn btn-default" >提 交 修 改</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="footer" style="padding-top: 50px">
+	<p style="text-align: center; color: rgb(128, 153, 175)">版权所有&copy; Copyright 1999-2017  正方软件股份有限公司　　中国·杭州西湖区紫霞街176号 互联网创新创业园2号301</p>
+</div>
+</body>
+</html>
