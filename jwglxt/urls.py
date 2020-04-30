@@ -16,7 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from app import views
-
+from django.views.generic.base import RedirectView
+from django.conf.urls import url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +28,6 @@ urlpatterns = [
     path('register_judge/', views.register_judge),
     path('register_judge_success/', views.register_judge_success),
     path('', views.login),
+    path('student_index/', views.student_index),
+    url(r'favicon.ico/', RedirectView.as_view(url=r'/static/image/favicon.ico')),
 ]

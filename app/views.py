@@ -41,7 +41,7 @@ def login_judge(request):
                     LoginUser = Student.objects.get(student_id=user_account)
                 except:
                     raise Http404
-                return render(request, 'student/student_information.html', {'student': LoginUser})
+                return render(request, 'student/student_index.html', {'student': LoginUser})
             elif user_identity == "teacher":
                 #查教师表
                 AccountID = user_account
@@ -186,7 +186,8 @@ def register_judge(request):
 def register_judge_success(request):
     return (request, "registerSuccess.html")
 
-
+def student_index(request):
+    return (request, 'student/student_index')
 
 
 
