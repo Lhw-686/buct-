@@ -37,11 +37,16 @@ def login_judge(request):
                 AccountID = user_account
                 AccountType = False
                 UserAccount = search_from_User[0]
+                course_list = []
                 try:
                     LoginUser = Student.objects.get(student_id=user_account)
+                    Course_information = SelectCourse.objects.filter(student_id=user_account)
+                    notice = Notice.objects.all()
+                    for i in Course_information:
+                        course_list.append({'term': i.term, 'name': i.course_id.course_name, 'grade': i.student_grade})
                 except:
                     raise Http404
-                return render(request, 'student/student_index.html', {'student': LoginUser})
+                return render(request, 'student/student_index.html', {'student': LoginUser, 'course_list': course_list, 'notice': notice})
             elif user_identity == "teacher":
                 #查教师表
                 AccountID = user_account
@@ -188,11 +193,25 @@ def register_judge_success(request):
 
 def student_index(request):
     return render(request, 'student/student_index.html')
-def student_information_fix(request, id):
-    is_fix = False
-    student = Student.objects.get(student_id=id)
-    user = User.objects.get(account=id)
-    return render(request, 'student/student_information_fix.html', {'student': student, 'user': user, 'is_fix': is_fix})
+def student_information_fix(request, id, status):
+    if status != '3':
+        student = Student.objects.get(student_id=id)
+    if status == '0':
+        is_fix = False
+        user = User.objects.get(account=id)
+        return render(request, 'student/student_information_fix.html', {'student': student, 'user': user, 'is_fix': is_fix})
+    elif status == '1':
+        return render(request, 'student/student_schedule.html', {'student': student, })
+    elif status == '2':
+        grade_list = []
+        '''select = SelectCourse.objects.filter(student_id=id)
+        for i in select:
+            grade_list.append({'id': i.course_id.course_id, 'name': i.course_id.course_name, 'grade': i.student_grade, 'college': i.course_id.get_course_college_display})
+        '''
+        return render(request, 'student/student_grade.html', {'grade_list': grade_list, 'student': student})
+    elif status == '3':
+        notice = Notice.objects.get(notice_id=id)
+        return render(request, 'student/notice.html', {'notice': notice})
 
 def student_submit_fix(request):
     id = request.POST['id']
@@ -217,9 +236,20 @@ def student_submit_fix(request):
     student.save()
     return render(request, 'student/student_information_fix.html', {'student': student, 'user': user, 'is_fix': is_fix})
 
+def find_grade(request):
+    id = request.POST.get('id')
+    student = Student.objects.get(student_id=id)
+    print(id)
+    year = request.POST.get('year')
+    number = request.POST.get('number')
+    year_number = year+number
+    print(type(year_number))
 
-
-
+    grade = SelectCourse.objects.filter(Q(student_id=id) & Q(term=year_number) )
+    grade_list = []
+    for i in grade:
+        grade_list.append({'id': i.course_id.course_id, 'name': i.course_id.course_name, 'grade': i.student_grade, 'college': i.course_id.get_course_college_display})
+    return render(request, 'student/student_grade.html', {'grade_list': grade_list, 'student': student, })
 
 
 
