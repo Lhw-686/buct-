@@ -134,11 +134,14 @@ class SelectCourse(models.Model):
 
 class CourseArrangement(models.Model):
     '''课程安排表'''
-    course_id = models.ForeignKey(Course, on_delete=models.DO_NOTHING, verbose_name='课程号')
-    term = models.CharField(max_length=20, verbose_name='学期')
-    teacher_id = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING, verbose_name='工号')
-    week_begin = models.IntegerField(verbose_name='开课周')
-    week_end = models.IntegerField(verbose_name='结课周')
+    course_id = models.ForeignKey(to='Course', on_delete=models.DO_NOTHING, verbose_name='课程号')
+    term = models.CharField(max_length=20, verbose_name='地点')
+    teacher_id = models.ForeignKey(to='Teacher', on_delete=models.DO_NOTHING, verbose_name='工号')
+    week_begin = models.CharField(max_length=20, verbose_name='星期')
+    week_end = models.CharField(max_length=20, verbose_name='节次')
+    '''location = models.CharField(max_length=20, verbose_name='地点')
+    weekday = models.CharField(max_length=20, verbose_name='上课日期')
+    session = models.CharField(max_length=20, verbose_name='上课节次')'''
 
     class Meta:
         verbose_name = '课程安排表'

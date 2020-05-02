@@ -49,30 +49,32 @@
     <div class="container" style="margin-left: 70px; margin-top: 1px; padding: 0px; margin-right: 70px; width: auto; background-color: white">
         <div class="row">
             <div class="col-md-12" style="line-height: 70px;border: 1px solid #eeeeee;">
-                <form method="post" action="" class="form-group form-inline">
+                <form method="post" action="/find_schedule/" class="form-group form-inline">
+                    {% csrf_token %}
                     <div class="col-md-4 " style="padding-left: 100px">
-                        <label>
+                        <label">
                             <span style="color: red">*</span>
                             学年
                         </label>
-                        <select class="form-control" style="width: 260px">
-                            <option>2019-2020</option>
-                            <option>2018-2019</option>
+                        <select class="form-control" name="year" style="width: 260px">
+                            <option value="2019-2020">2019-2020</option>
+                            <option value="2018-2019">2018-2019</option>
                         </select>
                     </div>
                     <div class="col-md-4" style="padding-left: 100px">
-                        <label>
+                        <label ">
                             <span style="color: red">*</span>
                             学期
                         </label>
-                        <select class="form-control" style="width: 260px">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
+                        <select class="form-control" name="number" style="width: 260px">
+                            <option value="-1">1</option>
+                            <option value="-2">2</option>
+                            <option value="-3">3</option>
                         </select>
                     </div>
                     <div class="col-md-4" style="padding-left: 300px;">
-                        <button type="button" class="btn btn-primary btn-sm  btn-group-vertical" >
+                        <input name="id" value="{{ student.student_id }}" hidden>
+                        <button type="submit" class="btn btn-primary btn-sm  btn-group-vertical" >
                             <span class="glyphicon glyphicon-search"></span>
                             查询
                         </button>
@@ -80,397 +82,101 @@
                 </form>
             </div>
         </div>
-        <div>
-            <div style="display: block; opacity: 1; transition: opacity 0.15s linear 0s; font-weight: bolder;">
-                <table style="width: 98%; margin-left: 10px;" class="table table-bordered text-center">
-                    <tbody>
-                        <tr>
-                            <td colspan="9">
-                                <div style="color: rgb(102, 102, 102); font-size: 30px;">
-                                    <h6 class="pull-left">2019-2020学年第2学期</h6>
-                                    {{ student.student_name }}的课表
-                                    <h6 class="pull-right">学号: {{ student.student_id }}</h6>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width="7.5%">
-                                <span class="time">时间段</span>
-                            </td>
-                            <td width="5%">
-                                <span class="time">节次</span>
-                            </td>
-                            <td width="12.5%">
-                                <span class="time">星期一</span>
-                            </td>
-                            <td width="12.5%">
-                                <span class="time">星期二</span>
-                            </td>
-                            <td width="12.5%">
-                                <span class="time">星期三</span>
-                            </td>
-                            <td width="12.5%">
-                                <span class="time">星期四</span>
-                            </td>
-                            <td width="12.5%">
-                                <span class="time">星期五</span>
-                            </td>
-                            <td width="12.5%">
-                                <span class="time">星期六</span>
-                            </td>
-                            <td width="12.5%">
-                                <span class="time">星期日</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td rowspan="5">
-                                <span class="time" >上午</span>
-                            </td>
-                            <td>
-                                <span class="festival">1</span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="festival">2</span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="festival">3</span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="festival">4</span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="festival">5</span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td rowspan="5">
-                                <span class="time">下午</span>
-                            </td>
-                            <td>
-                                <span class="festival">6</span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="festival">7</span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="festival">8</span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="festival">9</span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="festival">10</span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td rowspan="3">
-                                <span class="time">晚上</span>
-                            </td>
-                            <td>
-                                <span class="festival">11</span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="festival">12</span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="festival">13</span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                            <td rowspan="1" class="td_wrap">
-                                <span></span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-md-12 " style="border: 1px solid #eeeeee; line-height: 100px">
+                <span style="text-align: center; display: block; color: rgb(102,102,102); font-size: 30px; font-weight: bolder ">{{ student.student_name }}的课表</span>
+            </div>
+            <div class="col-md-12 " style="border: 1px solid #eeeeee; line-height: 50px">
+                <div class="col-md-2" style="border-right: 1px solid #eeeeee;text-align: center; display: inline-block">
+                    <span class="time">星期</span>
+                </div>
+                <div class="col-md-10" style="text-align: center; display: inline-block">
+                    <span class="time">课表信息</span>
+                </div>
+            </div>
+            <div class="col-md-12 " style="border: 1px solid #eeeeee; line-height: 50px">
+                <div class="col-md-2" style="border-right: 1px solid #eeeeee;text-align: center; display: inline-block">
+                    <span class="time">星期一</span>
+                </div>
+                <div class="col-md-10" style="text-align: center; display: inline-block; border-left: 1px solid #eeeeee;">
+                    {% for i in course %}
+                        {% if i.week == '星期一' %}
+                            <span >{{ i.name }}<br>时间: {{ i.time }}节&nbsp&nbsp&nbsp地点: {{ i.location }}&nbsp&nbsp&nbsp教师: {{ i.teacher }}<br></span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-12 " style="border: 1px solid #eeeeee; line-height: 50px">
+                <div class="col-md-2" style="border-right: 1px solid #eeeeee;text-align: center; display: inline-block">
+                    <span class="time">星期二</span>
+                </div>
+                <div class="col-md-10" style="text-align: center; display: inline-block; border-left: 1px solid #eeeeee;">
+                    {% for i in course %}
+                        {% if i.week == '星期二' %}
+                            <span >{{ i.name }}<br>时间: {{ i.time }}节&nbsp&nbsp&nbsp地点: {{ i.location }}&nbsp&nbsp&nbsp教师: {{ i.teacher }}<br></span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-12 " style="border: 1px solid #eeeeee; line-height: 50px">
+                <div class="col-md-2" style="border-right: 1px solid #eeeeee;text-align: center; display: inline-block">
+                    <span class="time">星期三</span>
+                </div>
+                <div class="col-md-10" style="text-align: center; display: inline-block; border-left: 1px solid #eeeeee;">
+                    {% for i in course %}
+                        {% if i.week == '星期三' %}
+                            <span >{{ i.name }}<br>时间: {{ i.time }}节&nbsp&nbsp&nbsp地点: {{ i.location }}&nbsp&nbsp&nbsp教师: {{ i.teacher }}<br></span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-12 " style="border: 1px solid #eeeeee; line-height: 50px">
+                <div class="col-md-2" style="border-right: 1px solid #eeeeee;text-align: center; display: inline-block">
+                    <span class="time">星期四</span>
+                </div>
+                <div class="col-md-10" style="text-align: center; display: inline-block; border-left: 1px solid #eeeeee;">
+                    {% for i in course %}
+                        {% if i.week == '星期四' %}
+                            <span >{{ i.name }}<br>时间: {{ i.time }}节&nbsp&nbsp&nbsp地点: {{ i.location }}&nbsp&nbsp&nbsp教师: {{ i.teacher }}<br></span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-12 " style="border: 1px solid #eeeeee; line-height: 50px">
+                <div class="col-md-2" style="border-right: 1px solid #eeeeee;text-align: center; display: inline-block">
+                    <span class="time">星期五</span>
+                </div>
+                <div class="col-md-10" style="text-align: center; display: inline-block; border-left: 1px solid #eeeeee;">
+                    {% for i in course %}
+                        {% if i.week == '星期五' %}
+                            <span >{{ i.name }}<br>时间: {{ i.time }}节&nbsp&nbsp&nbsp地点: {{ i.location }}&nbsp&nbsp&nbsp教师: {{ i.teacher }}<br></span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-12 " style="border: 1px solid #eeeeee; line-height: 50px">
+                <div class="col-md-2" style="border-right: 1px solid #eeeeee;text-align: center; display: inline-block">
+                    <span class="time">星期六</span>
+                </div>
+                <div class="col-md-10" style="text-align: center; display: inline-block; border-left: 1px solid #eeeeee;">
+                    {% for i in course %}
+                        {% if i.week == '星期六' %}
+                            <span >{{ i.name }}<br>时间: {{ i.time }}节&nbsp&nbsp&nbsp地点: {{ i.location }}&nbsp&nbsp&nbsp教师: {{ i.teacher }}<br></span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-12 " style="border: 1px solid #eeeeee; line-height: 50px" onmouseover="">
+                <div class="col-md-2" style="border-right: 1px solid #eeeeee;text-align: center; display: inline-block">
+                    <span class="time">星期日</span>
+                </div>
+                <div class="col-md-10" style="text-align: center; display: inline-block; border-left: 1px solid #eeeeee;">
+                    {% for i in course %}
+                        {% if i.week == '星期日' %}
+                            <span >{{ i.name }}<br>时间: {{ i.time }}节&nbsp&nbsp&nbsp地点: {{ i.location }}&nbsp&nbsp&nbsp教师: {{ i.teacher }}<br></span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
