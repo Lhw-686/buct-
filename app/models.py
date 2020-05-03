@@ -122,7 +122,7 @@ class Course(models.Model):
 
 class SelectCourse(models.Model):
     '''选课表'''
-    student_id = models.ForeignKey(Student, on_delete=models.DO_NOTHING, verbose_name='学号')
+    student_id = models.ForeignKey(to='Student', on_delete=models.DO_NOTHING, verbose_name='学号')
     term = models.CharField(max_length=20, verbose_name='学期')
     course_id = models.ForeignKey(to='Course',  on_delete=models.DO_NOTHING, verbose_name='课程号')
     student_grade = models.CharField(max_length=20, verbose_name='成绩')

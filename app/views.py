@@ -3,6 +3,8 @@ from django.http import Http404, HttpResponse
 from django.db.models import Q
 from app.models import *
 from app.templates.formCheck import *
+from datetime import *
+import time
 AccountID = None
 AccountType = False
 LoginUser = None
@@ -38,24 +40,12 @@ def login_judge(request):
                 AccountType = False
                 UserAccount = search_from_User[0]
                 course_list = []
-                schedule_list = []
                 try:
                     LoginUser = Student.objects.get(student_id=user_account)
                     Course_information = SelectCourse.objects.filter(student_id=user_account)
                     notice = Notice.objects.all()
                     for i in Course_information:
                         course_list.append({'term': i.term, 'name': i.course_id.course_name, 'grade': i.student_grade})
-                    year = request.POST.get('year')
-                    number = request.POST.get('number')
-                    year_number = year + number
-                    select = SelectCourse.objects.filter(Q(student_id=id) & Q(term=year_number))
-                    course_list = []
-                    for i in select:
-                        course = CourseArrangement.objects.get(course_id=i.course_id)
-                        course_list.append(
-                            {'name': course.course_id.course_name, 'week': course.week_begin, 'time': course.week_end,
-                             'location': course.term, 'teacher': course.teacher_id.teacher_name})
-
                 except:
                     raise Http404
                 return render(request, 'student/student_index.html', {'student': LoginUser, 'course_list': course_list, 'notice': notice})
@@ -231,6 +221,26 @@ def student_information_fix(request, id, status):
     elif status == '3':
         notice = Notice.objects.get(notice_id=id)
         return render(request, 'student/notice.html', {'notice': notice})
+    elif status == '4':
+        is_select = 0
+        course = Course.objects.all()
+        print(type(course))
+        is_selected = False
+        year = datetime.now()
+        last_year = year.year - 1
+        time = str(last_year) + '-' + str(year.year)
+        if year.month < 7:
+            time = time + '-1'
+        elif year.month < 9:
+            time = time + '-2'
+        else:
+            time = time + '-3'
+        if SelectCourse.objects.filter(Q(student_id=id) & Q(term=time)):
+            is_selected = True
+            selected = SelectCourse.objects.filter(Q(student_id=id) & Q(term=time))
+            print(type(selected))
+
+        return render(request, 'student/student_select_course.html', {'course': course, 'student': student, 'is_selected': is_selected, 'selected': selected, 'is_select': is_select})
 
 def student_submit_fix(request):
     id = request.POST['id']
@@ -283,6 +293,83 @@ def find_schedule(request):
         course_list.append({'name': course.course_id.course_name, 'week': course.week_begin, 'time': course.week_end, 'location': course.term, 'teacher': course.teacher_id.teacher_name})
     return render(request, 'student/student_schedule.html', {'student': student, 'course': course_list})
     '''后续有时间需要在课程安排表里面加入学期'''
+
+def find_course(request):
+    course_id = request.POST.get('course_id')
+    course_name = request.POST.get('course_name')
+    student_id = request.POST.get('id')
+    student = Student.objects.get(student_id=student_id)
+    year = datetime.now()
+    last_year = year.year-1
+    time = str(last_year) + '-' + str(year.year)
+    if year.month <7:
+        time = time + '-1'
+    elif year.month<9:
+        time = time + '-2'
+    else:
+        time = time + '-3'
+    if course_id != '':
+        print('wuhu')
+        course = Course.objects.filter(course_id=course_id)
+        print(course)
+        is_selected = False
+        if SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time)):
+            is_selected = True
+            selected = SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time))
+        return render(request, 'student/student_select_course.html', {'student': student, 'course': course, 'selected': selected, 'is_selected': is_selected})
+    elif course_name != '':
+        is_selected = False
+        if SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time)):
+            is_selected = True
+            selected = SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time))
+        course = Course.objects.filter(course_name=course_name)
+        return render(request, 'student/student_select_course.html', {'student': student, 'course': course, 'selected': selected, 'is_selected': is_selected})
+    else:
+        return
+def select_course(request):
+    student_id = request.POST.get('iid')
+    course_id = request.POST.get('cid')
+    student = Student.objects.get(student_id=student_id)
+    year = datetime.now()
+    last_year = year.year - 1
+    time = str(last_year) + '-' + str(year.year)
+    if year.month < 7:
+        time = time + '-1'
+    elif year.month < 9:
+        time = time + '-2'
+    else:
+        time = time + '-3'
+    if SelectCourse.objects.filter(Q(student_id=student_id) & Q(course_id=course_id) & Q(term=time)):
+        is_select = 1
+        course = Course.objects.all()
+        print(type(course))
+        is_selected = False
+        if SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time)):
+            is_selected = True
+            selected = SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time))
+            print(type(selected))
+
+        return render(request, 'student/student_select_course.html',
+                      {'course': course, 'student': student, 'is_selected': is_selected, 'selected': selected,
+                       'is_select': is_select})
+    else:
+        print('wowowowowowowowowoowowowowowowowow')
+        is_select = 2
+        course = Course.objects.all()
+        print(type(course))
+        is_selected = False
+        sid = Student.objects.get(student_id=student_id)
+        cid = Course.objects.get(course_id=course_id)
+        SelectCourse.objects.create(student_id=sid, course_id=cid, term=time, student_grade=0)
+        if SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time)):
+            is_selected = True
+            selected = SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time))
+            print(type(selected))
+
+        return render(request, 'student/student_select_course.html',
+                      {'course': course, 'student': student, 'is_selected': is_selected, 'selected': selected,
+                       'is_select': is_select})
+
 
 '''
 def register_information(request):

@@ -34,5 +34,7 @@ urlpatterns = [
     url('login_judge/(\d+)(\d+)/$', views.student_information_fix, name='fix'),
     path('find_grade/', views.find_grade),
     path('find_schedule/', views.find_schedule),
+    path('find_course/', views.find_course),
+    path('select_course/', views.select_course),
     url(r'favicon.ico/', RedirectView.as_view(url=r'/static/image/favicon.ico')),
 ]

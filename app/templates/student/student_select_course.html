@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load staticfiles %}
+    <meta charset="utf-8"/>
+    <title>自主选课</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: rgb(240, 240, 240);
+        }
+    </style>
+</head>
+<body>
+    {% if is_select == 1 %}
+        <script>
+            window.onload=function () {
+                alert("您已选择该课程！")
+            }
+        </script>
+        {% elif is_select == 2 %}
+        <script>
+            window.onload=function () {
+                alert("选课成功！")
+            }
+        </script>
+    {% endif %}
+    <div style="background: #0483d4; border: 1px solid #e7e7e7;line-height: 60px; margin-bottom: 15px">
+        <img src="{% static 'image/logo_jw_w2.png' %}" style="padding-left: 80px">
+        <span style="color: white; font-size: 25px; vertical-align: middle">自主选课</span>
+    </div>
+    <div class="container" style="margin-left: 70px; width: auto; background: white; margin-right: 70px; min-height: 600px;">
+        <div class="row">
+            <div class="col-md-12" style="line-height: 70px; border-bottom: 1px solid rgb(221, 221, 221)">
+                <form method="post" action="/find_course/"  class="form-group form-inline">
+                    {% csrf_token %}
+                    <div class="col-md-4 " style="padding-left: 100px">
+                        <input name="id" value="{{ student.student_id }}" hidden>
+                        <label>
+                            课程号:
+                        </label>
+                        <input type="text" name="course_id" class="form-control">
+                    </div>
+                    <div class="col-md-4" style="padding-left: 100px">
+                        <label>
+                            课程名:
+                        </label>
+                        <input type="text" name="course_name" class="form-control">
+                    </div>
+                    <div class="col-md-4" style="padding-left: 300px;">
+                        <button type="submit" class="btn btn-primary btn-sm  btn-group-vertical" >
+                            <span class="glyphicon glyphicon-search"></span>
+                            查询
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-9">
+                <div class="panel-group" id="accordion" style="margin-top: 20px;">
+                    {% for i in course %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading" style="background: #0483d4; color: white">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                    href="#{{ i.course_id }}" style="text-decoration: none">
+                                        <span>{{ i.course_name }}</span>
+                                        <span class="pull-right">{{ i.course_id }}</span>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="{{ i.course_id }}" class="panel-collapse collapse ">
+                                <div class="panel-body">
+                                    <span>
+                                        {{ i.course_introduction }}
+                                    </span>
+                                    <form action="/select_course/" method="post">
+                                        {% csrf_token %}
+                                        <input name="iid" value="{{ student.student_id }}" hidden>
+                                        <input name="cid" value="{{ i.course_id }}" hidden>
+                                        <button type="submit" class="btn btn-primary btn-sm  btn-group-vertical pull-right"  name="select" value="{{ i.course_id }}">
+                                            选择课程
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div style="margin-top: 20px; color: black; font-size: 15px; font-weight: bolder; margin-bottom: 20px;">
+                    已选课程:
+                </div>
+                {% if is_selected %}
+                    <div class="panel-group" id="accord">
+
+                        {% for i in selected %}
+                            <div class="panel panel-default" style="margin-top: 5px;">
+                                <div class="panel-heading" style="background: #0483d4; color: white">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accord" href="#{{ i.course_id.course_college }}" style="text-decoration: none">
+                                            {{ i.course_id.course_name }}
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="{{ i.course_id.course_college}}" class="panel-collapse collapse">
+
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="panel-group" id="accord" >
+                        <div class="panel panel-default">
+                            <div class="panel-heading" style="background: #0483d4; color: white">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accord" style="text-decoration: none">
+                                        暂无已选课程
+                                    </a>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="footer" style="padding: 25px">
+	<p style="text-align: center; color: rgb(128, 153, 175)">版权所有&copy; Copyright 1999-2017  正方软件股份有限公司　　中国·杭州西湖区紫霞街176号 互联网创新创业园2号301</p>
+    </div>
+</body>
+</html>

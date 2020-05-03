@@ -46,7 +46,7 @@
                 </a>
                 <ul class="dropdown-menu" role="menu">
                     <li>
-                        <a href="#">自主选课</a>
+                        <a href="{% url 'fix' student.student_id 4  %}" target="_blank">自主选课</a>
                     </li>
                 </ul>
             </li>
@@ -71,10 +71,10 @@
                         <a href="{% url 'fix' student.student_id 1  %} " target="_blank">课表查询</a>
                     </li>
                      <li>
-                        <a href="{% url 'fix' student.student_id 2  %}">成绩查询</a>
+                        <a href="{% url 'fix' student.student_id 2  %}" target="_blank">成绩查询</a>
                     </li>
                      <li>
-                        <a href="#">课程查询</a>
+                        <a href="#" target="_blank">课程查询</a>
                     </li>
                 </ul>
             </li>
@@ -103,7 +103,7 @@
                             </a>
                         </li>
                         <li class="col-md-4 col-sm-4 col-xs-6" style="text-align: center; font-size: 14px">
-                            <a href="#" style="text-decoration: none" target="_blank" title="自主选课">
+                            <a href="{% url 'fix' student.student_id 4  %}" style="text-decoration: none" target="_blank" title="自主选课">
                                 <img src="{% static 'image/zizhuxuanke.png' %}" style="min-height: 48px; vertical-align: middle" alt="自主选课">
                                 <h5 style="height: 60px; font-size: 14px; padding: 0px 0px 15px 0px; color: black">自主选课</h5>
                             </a>
