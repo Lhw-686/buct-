@@ -26,6 +26,12 @@
                 alert("选课成功！")
             }
         </script>
+        {% elif is_select == 3 %}
+        <script>
+            window.onload=function () {
+                alert("取消成功！")
+            }
+        </script>
     {% endif %}
     <div style="background: #0483d4; border: 1px solid #e7e7e7;line-height: 60px; margin-bottom: 15px">
         <img src="{% static 'image/logo_jw_w2.png' %}" style="padding-left: 80px">
@@ -94,19 +100,30 @@
                     已选课程:
                 </div>
                 {% if is_selected %}
-                    <div class="panel-group" id="accord">
-
+                    <div class="panel-group" id="accordion">
                         {% for i in selected %}
-                            <div class="panel panel-default" style="margin-top: 5px;">
+                            <div class="panel panel-default">
                                 <div class="panel-heading" style="background: #0483d4; color: white">
                                     <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accord" href="#{{ i.course_id.course_id }}" style="text-decoration: none">
-                                            {{ i.course_id.course_name }}
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#{{ i.count }}" style="text-decoration: none">
+                                            {{ i.course_name }}
                                         </a>
                                     </h4>
                                 </div>
-                                <div id="{{ i.course_id.course_id}}" class="panel-collapse collapse">
-
+                                <div id="{{ i.count }}" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                       <form action="/cancel_select/" method="post">
+                                           {% csrf_token %}
+                                           <input name="stuid" value="{{ student.student_id }}" hidden>
+                                           <input name="couid" value="{{ i.course_id }}" hidden>
+                                           <input name="couname" value="{{ i.course_name }}" hidden>
+                                           <input name="term" value="{{ term }}" hidden>
+                                           <button type="submit" class="btn btn-primary btn-sm  btn-group-vertical pull-right"  name="cancel" value="{{ student.student_id }}">
+                                                取消选择
+                                           </button>
+                                       </form>
+                                    </div>
                                 </div>
                             </div>
                         {% endfor %}

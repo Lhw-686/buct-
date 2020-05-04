@@ -264,6 +264,8 @@ def student_information_fix(request, id, status):
         year = datetime.now()
         last_year = year.year - 1
         time = str(last_year) + '-' + str(year.year)
+        count = int(1)
+        selected_list = []
         if year.month < 7:
             time = time + '-1'
         elif year.month < 9:
@@ -273,8 +275,11 @@ def student_information_fix(request, id, status):
         if SelectCourse.objects.filter(Q(student_id=id) & Q(term=time)):
             is_selected = True
             selected = SelectCourse.objects.filter(Q(student_id=id) & Q(term=time))
+            for i in selected:
+                count = count + 1
+                selected_list.append({'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name, 'count': count})
 
-        return render(request, 'student/student_select_course.html', {'course': course, 'student': student, 'is_selected': is_selected, 'selected': selected, 'is_select': is_select})
+        return render(request, 'student/student_select_course.html', {'course': course, 'student': student, 'is_selected': is_selected, 'selected': selected_list, 'is_select': is_select, 'term': time})
 
 def student_submit_fix(request):
     id = request.POST['id']
@@ -333,6 +338,7 @@ def find_course(request):
     course_name = request.POST.get('course_name')
     student_id = request.POST.get('id')
     student = Student.objects.get(student_id=student_id)
+    is_select = 0
     year = datetime.now()
     last_year = year.year-1
     time = str(last_year) + '-' + str(year.year)
@@ -342,22 +348,43 @@ def find_course(request):
         time = time + '-2'
     else:
         time = time + '-3'
+    selected_list = []
+    count = int(1)
     if course_id != '':
         course = Course.objects.filter(course_id=course_id)
         is_selected = False
         if SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time)):
             is_selected = True
             selected = SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time))
-        return render(request, 'student/student_select_course.html', {'student': student, 'course': course, 'selected': selected, 'is_selected': is_selected})
+            for i in selected:
+                count = count + 1
+                selected_list.append({'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name, 'count': count })
+        return render(request, 'student/student_select_course.html', {'student': student, 'course': course, 'selected': selected_list, 'is_selected': is_selected, 'is_select': is_select, 'term': time})
     elif course_name != '':
         is_selected = False
         if SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time)):
             is_selected = True
             selected = SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time))
+            for i in selected:
+                count = count + 1
+                selected_list.append({'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name, 'count': count })
         course = Course.objects.filter(course_name=course_name)
-        return render(request, 'student/student_select_course.html', {'student': student, 'course': course, 'selected': selected, 'is_selected': is_selected})
+        return render(request, 'student/student_select_course.html', {'student': student, 'course': course, 'selected': selected_list, 'is_selected': is_selected, })
     else:
-        return
+        course = Course.objects.all()
+        is_selected = False
+        if SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time)):
+            is_selected = True
+            selected = SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time))
+            for i in selected:
+                count = count + 1
+                selected_list.append(
+                    {'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name, 'count': count})
+        return render(request, 'student/student_select_course.html',
+                      {'student': student, 'course': course, 'selected': selected_list, 'is_selected': is_selected,
+                       'is_select': is_select, 'term': time})
+
+
 def select_course(request):
     student_id = request.POST.get('iid')
     course_id = request.POST.get('cid')
@@ -371,6 +398,8 @@ def select_course(request):
         time = time + '-2'
     else:
         time = time + '-3'
+    count = int(1)
+    selected_list = []
     if SelectCourse.objects.filter(Q(student_id=student_id) & Q(course_id=course_id) & Q(term=time)):
         is_select = 1
         course = Course.objects.all()
@@ -378,10 +407,13 @@ def select_course(request):
         if SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time)):
             is_selected = True
             selected = SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time))
-
+            for i in selected:
+                count = count + 1
+                selected_list.append(
+                    {'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name, 'count': count})
         return render(request, 'student/student_select_course.html',
-                      {'course': course, 'student': student, 'is_selected': is_selected, 'selected': selected,
-                       'is_select': is_select})
+                      {'course': course, 'student': student, 'is_selected': is_selected, 'selected': selected_list,
+                       'is_select': is_select, 'term': time})
     else:
         is_select = 2
         course = Course.objects.all()
@@ -392,10 +424,37 @@ def select_course(request):
         if SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time)):
             is_selected = True
             selected = SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time))
-
+            for i in selected:
+                count = count + 1
+                selected_list.append(
+                    {'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name, 'count': count})
         return render(request, 'student/student_select_course.html',
-                      {'course': course, 'student': student, 'is_selected': is_selected, 'selected': selected,
+                      {'course': course, 'student': student, 'is_selected': is_selected, 'selected': selected_list,
                        'is_select': is_select})
+
+def cancel_select(request):
+    time = request.POST.get('term')
+    student_id = request.POST.get('stuid')
+    course_id = request.POST.get('couid')
+    course_name = request.POST.get('couname')
+    student = Student.objects.get(student_id=student_id)
+    SelectCourse.objects.get(Q(student_id=student_id) & Q(course_id__course_id=course_id) & Q(term=time)).delete()
+    is_select = 3
+    course = Course.objects.all()
+    is_selected = False
+    count = int(1)
+    selected_list = []
+    if SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time)):
+        is_selected = True
+        selected = SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time))
+        for i in selected:
+            count = count + 1
+            selected_list.append(
+                {'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name, 'count': count})
+
+    return render(request, 'student/student_select_course.html',
+                  {'course': course, 'student': student, 'is_selected': is_selected, 'selected': selected_list,
+                   'is_select': is_select, 'term': time})
 
 
 '''
