@@ -34,6 +34,15 @@ def login_judge(request):
         #此账户存在于User表中
         if user_password == search_from_User[0].password:
             #密码正确
+            year = datetime.now()
+            last_year = year.year - 1
+            time = str(last_year) + '-' + str(year.year)
+            if year.month < 7:
+                time = time + '-1'
+            elif year.month < 9:
+                time = time + '-2'
+            else:
+                time = time + '-3'
             if user_identity == "student":
                 #查学生表
                 AccountID = user_account
@@ -42,13 +51,21 @@ def login_judge(request):
                 course_list = []
                 try:
                     LoginUser = Student.objects.get(student_id=user_account)
-                    Course_information = SelectCourse.objects.filter(student_id=user_account)
+                    Course_information = SelectCourse.objects.filter(Q(student_id=user_account) & Q(term=time))
                     notice = Notice.objects.all()
                     for i in Course_information:
-                        course_list.append({'term': i.term, 'name': i.course_id.course_name, 'grade': i.student_grade})
+                        if int(i.student_grade) > 0:
+                            course_list.append({'term': i.term, 'name': i.course_id.course_name, 'grade': i.student_grade})
+                    select = SelectCourse.objects.filter(Q(student_id=user_account) & Q(term=time))
+                    select_list = []
+                    for i in select:
+                        course = CourseArrangement.objects.get(course_id=i.course_id)
+                        select_list.append(
+                            {'name': course.course_id.course_name, 'week': course.week_begin, 'time': course.week_end,
+                             'location': course.term, 'teacher': course.teacher_id.teacher_name})
                 except:
                     raise Http404
-                return render(request, 'student/student_index.html', {'student': LoginUser, 'course_list': course_list, 'notice': notice})
+                return render(request, 'student/student_index.html', {'student': LoginUser, 'course_list': course_list, 'notice': notice, 'select_list': select_list})
             elif user_identity == "teacher":
                 #查教师表
                 AccountID = user_account
@@ -162,7 +179,6 @@ def register_judge(request):
         return render(request, "register.html", context=context)
     search_from_User2 = User.objects.filter(Q(phone=user_phone)|Q(email=user_email))
     if len(search_from_User2) > 0:
-        print(len(search_from_User2))
         for item in search_from_User2:
             if user_phone == item.phone:
                 context['isPhoneError'] = True
@@ -203,20 +219,40 @@ def student_information_fix(request, id, status):
         user = User.objects.get(account=id)
         return render(request, 'student/student_information_fix.html', {'student': student, 'user': user, 'is_fix': is_fix})
     elif status == '1':
-        '''select = SelectCourse.objects.filter(student_id=id)'''
+        year = datetime.now()
+        last_year = year.year - 1
+        time = str(last_year) + '-' + str(year.year)
+        term = time + '学年第'
+        if year.month < 7:
+            time = time + '-1'
+            term = term + '1学期'
+        elif year.month < 9:
+            time = time + '-2'
+            term = term + '2学期'
+        else:
+            time = time + '-3'
+            term = term + '3学期'
+        select = SelectCourse.objects.filter(Q(student_id=id) & Q(term=time))
         course_list = []
-        '''print(select)
         for i in select:
             course = CourseArrangement.objects.get(course_id=i.course_id)
             course_list.append({'name': course.course_id.course_name, 'week': course.week_begin, 'time': course.week_end, 'location': course.term, 'teacher': course.teacher_id.teacher_name})
-        print(course_list)'''
-        return render(request, 'student/student_schedule.html', {'student': student, 'course': course_list})
+        return render(request, 'student/student_schedule.html', {'student': student, 'course': course_list, 'term': term})
     elif status == '2':
         grade_list = []
-        '''select = SelectCourse.objects.filter(student_id=id)
+        year = datetime.now()
+        last_year = year.year - 1
+        time = str(last_year) + '-' + str(year.year)
+        if year.month < 7:
+            time = time + '-1'
+        elif year.month < 9:
+            time = time + '-2'
+        else:
+            time = time + '-3'
+        select = SelectCourse.objects.filter(Q(student_id=id) & Q(term=time))
         for i in select:
-            grade_list.append({'id': i.course_id.course_id, 'name': i.course_id.course_name, 'grade': i.student_grade, 'college': i.course_id.get_course_college_display})
-        '''
+            if int(i.student_grade) > 0:
+                grade_list.append({'id': i.course_id.course_id, 'name': i.course_id.course_name, 'grade': i.student_grade, 'college': i.course_id.get_course_college_display})
         return render(request, 'student/student_grade.html', {'grade_list': grade_list, 'student': student})
     elif status == '3':
         notice = Notice.objects.get(notice_id=id)
@@ -224,7 +260,6 @@ def student_information_fix(request, id, status):
     elif status == '4':
         is_select = 0
         course = Course.objects.all()
-        print(type(course))
         is_selected = False
         year = datetime.now()
         last_year = year.year - 1
@@ -238,7 +273,6 @@ def student_information_fix(request, id, status):
         if SelectCourse.objects.filter(Q(student_id=id) & Q(term=time)):
             is_selected = True
             selected = SelectCourse.objects.filter(Q(student_id=id) & Q(term=time))
-            print(type(selected))
 
         return render(request, 'student/student_select_course.html', {'course': course, 'student': student, 'is_selected': is_selected, 'selected': selected, 'is_select': is_select})
 
@@ -268,16 +302,15 @@ def student_submit_fix(request):
 def find_grade(request):
     id = request.POST.get('id')
     student = Student.objects.get(student_id=id)
-    print(id)
     year = request.POST.get('year')
     number = request.POST.get('number')
     year_number = year+number
-    print(type(year_number))
 
     grade = SelectCourse.objects.filter(Q(student_id=id) & Q(term=year_number) )
     grade_list = []
     for i in grade:
-        grade_list.append({'id': i.course_id.course_id, 'name': i.course_id.course_name, 'grade': i.student_grade, 'college': i.course_id.get_course_college_display})
+        if int(i.student_grade) > 0:
+            grade_list.append({'id': i.course_id.course_id, 'name': i.course_id.course_name, 'grade': i.student_grade, 'college': i.course_id.get_course_college_display})
     return render(request, 'student/student_grade.html', {'grade_list': grade_list, 'student': student, })
 
 def find_schedule(request):
@@ -286,12 +319,13 @@ def find_schedule(request):
     year = request.POST.get('year')
     number = request.POST.get('number')
     year_number = year + number
+    term = year + '学年第' + number[1] + '学期'
     select = SelectCourse.objects.filter(Q(student_id=id) & Q(term=year_number))
     course_list = []
     for i in select:
         course = CourseArrangement.objects.get(course_id=i.course_id)
         course_list.append({'name': course.course_id.course_name, 'week': course.week_begin, 'time': course.week_end, 'location': course.term, 'teacher': course.teacher_id.teacher_name})
-    return render(request, 'student/student_schedule.html', {'student': student, 'course': course_list})
+    return render(request, 'student/student_schedule.html', {'student': student, 'course': course_list, 'term': term})
     '''后续有时间需要在课程安排表里面加入学期'''
 
 def find_course(request):
@@ -309,9 +343,7 @@ def find_course(request):
     else:
         time = time + '-3'
     if course_id != '':
-        print('wuhu')
         course = Course.objects.filter(course_id=course_id)
-        print(course)
         is_selected = False
         if SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time)):
             is_selected = True
@@ -342,21 +374,17 @@ def select_course(request):
     if SelectCourse.objects.filter(Q(student_id=student_id) & Q(course_id=course_id) & Q(term=time)):
         is_select = 1
         course = Course.objects.all()
-        print(type(course))
         is_selected = False
         if SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time)):
             is_selected = True
             selected = SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time))
-            print(type(selected))
 
         return render(request, 'student/student_select_course.html',
                       {'course': course, 'student': student, 'is_selected': is_selected, 'selected': selected,
                        'is_select': is_select})
     else:
-        print('wowowowowowowowowoowowowowowowowow')
         is_select = 2
         course = Course.objects.all()
-        print(type(course))
         is_selected = False
         sid = Student.objects.get(student_id=student_id)
         cid = Course.objects.get(course_id=course_id)
@@ -364,7 +392,6 @@ def select_course(request):
         if SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time)):
             is_selected = True
             selected = SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time))
-            print(type(selected))
 
         return render(request, 'student/student_select_course.html',
                       {'course': course, 'student': student, 'is_selected': is_selected, 'selected': selected,
