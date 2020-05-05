@@ -70,22 +70,27 @@
                             <div class="panel-heading" style="background: #0483d4; color: white">
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion"
-                                    href="#{{ i.course_id }}" style="text-decoration: none">
-                                        <span>{{ i.course_name }}</span>
-                                        <span class="pull-right">{{ i.course_id }}</span>
+                                    href="#{{ i.course_id.course_id }}" style="text-decoration: none">
+                                        <span>{{ i.course_id.course_name }}</span>
+                                        <span class="pull-right">{{ i.course_id.course_id }}</span>
                                     </a>
                                 </h4>
                             </div>
-                            <div id="{{ i.course_id }}" class="panel-collapse collapse ">
+                            <div id="{{ i.course_id.course_id }}" class="panel-collapse collapse ">
                                 <div class="panel-body">
                                     <span>
-                                        {{ i.course_introduction }}
+                                        课程号: {{ i.course_id.course_id }}<br>
+                                        课程名: {{ i.course_id.course_name }}<br>
+                                        任课教师: {{ i.teacher_id.teacher_name }}<br>
+                                        上课时间: {{ i.weekday }}-{{ i.week }}周({{ i.session }}节)<br>
+                                        上课地点: {{ i.location }}<br>
+                                        课程介绍: {{ i.course_id.course_introduction }}<br>
                                     </span>
                                     <form action="/select_course/" method="post">
                                         {% csrf_token %}
                                         <input name="iid" value="{{ student.student_id }}" hidden>
-                                        <input name="cid" value="{{ i.course_id }}" hidden>
-                                        <button type="submit" class="btn btn-primary btn-sm  btn-group-vertical pull-right"  name="select" value="{{ i.course_id }}">
+                                        <input name="cid" value="{{ i.course_id.course_id }}" hidden>
+                                        <button type="submit" class="btn btn-primary btn-sm  btn-group-vertical pull-right"  name="select" value="{{ i.course_id.course_id }}">
                                             选择课程
                                         </button>
                                     </form>

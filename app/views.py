@@ -263,7 +263,7 @@ def student_information_fix(request, id, status):
     elif status == '4':
         student = Student.objects.get(student_id=id)
         is_select = 0
-        course = Course.objects.all()
+
         is_selected = False
         year = datetime.now()
         last_year = year.year - 1
@@ -276,6 +276,7 @@ def student_information_fix(request, id, status):
             time = time + '-2'
         else:
             time = time + '-3'
+        course = CourseArrangement.objects.filter(term=time)
         if SelectCourse.objects.filter(Q(student_id=id) & Q(term=time)):
             is_selected = True
             selected = SelectCourse.objects.filter(Q(student_id=id) & Q(term=time))
