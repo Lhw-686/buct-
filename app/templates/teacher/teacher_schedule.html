@@ -49,7 +49,7 @@
     <div class="container" style="margin-left: 70px; margin-top: 1px; padding: 0px; margin-right: 70px; width: auto; background-color: white">
         <div class="row">
             <div class="col-md-12" style="line-height: 70px;border: 1px solid #eeeeee;">
-                <form method="post" action="/find_schedule/" class="form-group form-inline">
+                <form method="post" action="/find_course_schedule/" class="form-group form-inline">
                     {% csrf_token %}
                     <div class="col-md-4 " style="padding-left: 100px">
                         <label">
@@ -62,7 +62,7 @@
                         </select>
                     </div>
                     <div class="col-md-4" style="padding-left: 100px">
-                        <label ">
+                        <label>
                             <span style="color: red">*</span>
                             学期
                         </label>
@@ -73,7 +73,7 @@
                         </select>
                     </div>
                     <div class="col-md-4" style="padding-left: 300px;">
-                        <input name="id" value="{{ student.student_id }}" hidden>
+                        <input name="id" value="{{ teacher.teacher_id }}" hidden>
                         <button type="submit" class="btn btn-primary btn-sm  btn-group-vertical" >
                             <span class="glyphicon glyphicon-search"></span>
                             查询
@@ -84,7 +84,7 @@
         </div>
         <div class="row" style="margin-top: 20px;">
             <div class="col-md-12 " style="border: 1px solid #eeeeee; line-height: 100px">
-                <span style="text-align: center; display: block; color: rgb(102,102,102); font-size: 30px; font-weight: bolder ">{{ student.student_name }}的课表</span>
+                <span style="text-align: center; display: block; color: rgb(102,102,102); font-size: 30px; font-weight: bolder ">{{ teacher.teacher_name }}的课表</span>
                 <div class="col-md-12" style="line-height: 15px; margin-bottom: 5px;"><span style="color: rgb(102, 102, 102);" class="pull-left">{{ term }}</span></div>
             </div>
             <div class="col-md-12 " style="border: 1px solid #eeeeee; line-height: 50px">

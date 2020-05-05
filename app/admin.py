@@ -32,7 +32,7 @@ class SelectCourseAdmin(admin.ModelAdmin):
 
 class CourseArrangementAdmin(admin.ModelAdmin):
     list_display = ['course_id', 'term', 'teacher_id',
-                    'week_begin', 'week_end'
+                    'week', 'session', 'location', 'weekday'
                     ]
 
 class SchoolTermAdmin(admin.ModelAdmin):
@@ -47,10 +47,10 @@ class NoticeAdmin(admin.ModelAdmin):
     list_display = ['notice_id', 'notice_send_time', 'notice_content', 'notice_title']
 
 class SelectListAdmin(admin.ModelAdmin):
-    list_display = ['major', 'term', 'course_id', 'status']
+    list_display = ['major', 'term', 'course_id', 'status', 'volume']
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['account', 'identity', 'password', 'phone', 'email']
+    list_display = ['account', 'identity', 'name', 'password', 'phone', 'email']
 
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Teacher, TeacherAdmin)

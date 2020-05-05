@@ -89,7 +89,7 @@ class Teacher(models.Model):
     teacher_sex = models.CharField(max_length=20, choices=sex, default='男', verbose_name='性别', null=True)
     teacher_nation = models.CharField(max_length=20, choices=nation, default='汉族', verbose_name='民族', null=True)
     teacher_political_status = models.CharField(max_length=20, choices=political_status, default='群众', verbose_name='政治面貌', null=True)
-    teacher_department = models.CharField(max_length=20, verbose_name='部门', null=True)
+    teacher_department = models.CharField(max_length=20, verbose_name='学院', choices=college, default='信息科学与技术学院', null=True)
     teacher_academic_title = models.CharField(max_length=20, choices=academic_title, default='教授', verbose_name='职称', null=True)
     teacher_degree = models.CharField(max_length=20, choices=degree, default='学士', verbose_name='学位', null=True)
     teacher_come_year = models.DateTimeField(verbose_name='入职日期', null=True) #去掉time
@@ -135,13 +135,13 @@ class SelectCourse(models.Model):
 class CourseArrangement(models.Model):
     '''课程安排表'''
     course_id = models.ForeignKey(to='Course', on_delete=models.DO_NOTHING, verbose_name='课程号')
-    term = models.CharField(max_length=20, verbose_name='地点')
+    term = models.CharField(max_length=20, verbose_name='学期')
     teacher_id = models.ForeignKey(to='Teacher', on_delete=models.DO_NOTHING, verbose_name='工号')
-    week_begin = models.CharField(max_length=20, verbose_name='星期')
-    week_end = models.CharField(max_length=20, verbose_name='节次')
-    '''location = models.CharField(max_length=20, verbose_name='地点')
+    week = models.CharField(max_length=20, verbose_name='周次')
+    session = models.CharField(max_length=20, verbose_name='节次')
+    location = models.CharField(max_length=20, verbose_name='地点')
     weekday = models.CharField(max_length=20, verbose_name='上课日期')
-    session = models.CharField(max_length=20, verbose_name='上课节次')'''
+
 
     class Meta:
         verbose_name = '课程安排表'
@@ -150,7 +150,7 @@ class CourseArrangement(models.Model):
 
 
 class SchoolTerm(models.Model):
-    '''学期表'''
+    '''学期表（搁置）'''
     begin_year = models.CharField(max_length=20, verbose_name='开始年份')
     end_year = models.CharField(max_length=20, verbose_name='结束年份')
     number = models.IntegerField(verbose_name='学期号')
@@ -161,7 +161,7 @@ class SchoolTerm(models.Model):
         unique_together = ('begin_year', 'end_year', 'number',)
 
 class Message(models.Model):
-    '''消息表'''
+    '''消息表(搁置)'''
     message_id = models.CharField(max_length=20, verbose_name='消息号', primary_key=True, unique=True, db_index=True)
     student_id = models.ForeignKey(Student, on_delete=models.DO_NOTHING, verbose_name='学号')
     message_content = models.CharField(max_length=1000, verbose_name='消息内容')
@@ -190,6 +190,7 @@ class SelectList(models.Model):
     term = models.CharField(max_length=20, verbose_name='学期')
     course_id = models.ForeignKey(Course, on_delete=models.DO_NOTHING, verbose_name='课程号')
     status = models.CharField(max_length=20, verbose_name='状态')
+    volume = models.IntegerField(verbose_name='容量')
 
     class Meta:
         verbose_name = '选课清单表'
@@ -199,6 +200,7 @@ class SelectList(models.Model):
 class User(models.Model):
     '''用户登录表'''
     account = models.CharField(max_length=20, verbose_name='账号')
+    name = models.CharField(max_length=20, verbose_name='姓名')
     identity = models.CharField(max_length=20, choices=ident, default='学生', verbose_name='身份')
     password = models.CharField(max_length=32, verbose_name='密码')
     phone = models.CharField(max_length=11, verbose_name='手机号码', unique=True)

@@ -57,7 +57,7 @@
                 </a>
                 <ul class="dropdown-menu" role="menu">
                     <li>
-                        <a href="{% url 'fix' student.student_id 0 %}" target="_blank" >学生个人信息维护</a>
+                        <a href="{% url 'fix' teacher.teacher_id 7 %}" target="_blank" >教师个人信息维护</a>
                     </li>
                 </ul>
             </li>
@@ -68,13 +68,13 @@
                 </a>
                  <ul class="dropdown-menu" role="menu">
                     <li>
-                        <a href="{% url 'fix' student.student_id 1  %} " target="_blank">课表查询</a>
+                        <a href="" target="_blank">授课查询</a>
                     </li>
                      <li>
-                        <a href="#">成绩查询</a>
+                        <a href="#">学生成绩管理</a>
                     </li>
                      <li>
-                        <a href="#">课程查询</a>
+                        <a href="#"></a>
                     </li>
                 </ul>
             </li>
@@ -91,27 +91,27 @@
                     </h3>
                     <ul style="list-style: none; height: 502px; padding: 15px 0px;">
                         <li class="col-md-4 col-sm-4 col-xs-6" style="text-align: center; font-size: 14px">
-                            <a href="{% url 'fix' student.student_id 0 %}" name="" style="text-decoration: none" target="_blank" title="个人信息维护">
+                            <a href="{% url 'fix' teacher.teacher_id 7 %}" style="text-decoration: none" target="_blank" title="个人信息维护">
                                 <img src="{% static 'image/xinxiweihu.png' %}" style="min-height: 48px; vertical-align: middle" alt="个人信息维护">
                                 <h5 style="height: 60px; font-size: 14px; padding: 0px 0px 15px 0px; color: black">个人信息维护</h5>
                             </a>
                         </li>
                         <li class="col-md-4 col-sm-4 col-xs-6" style="text-align: center; font-size: 14px">
-                            <a href="#" style="text-decoration: none" target="_blank" title="学生课表查询">
-                                <img src="{% static 'image/kebiaochaxun.png' %}" style="min-height: 48px; vertical-align: middle" alt="学生课表查询">
-                                <h5 style="height: 60px; font-size: 14px; padding: 0px 0px 15px 0px; color: black">学生课表查询</h5>
+                            <a href="#" style="text-decoration: none" target="_blank" title="授课查询">
+                                <img src="{% static 'image/kebiaochaxun.png' %}" style="min-height: 48px; vertical-align: middle" alt="授课查询">
+                                <h5 style="height: 60px; font-size: 14px; padding: 0px 0px 15px 0px; color: black">授课查询</h5>
                             </a>
                         </li>
                         <li class="col-md-4 col-sm-4 col-xs-6" style="text-align: center; font-size: 14px">
-                            <a href="#" style="text-decoration: none" target="_blank" title="自主选课">
-                                <img src="{% static 'image/zizhuxuanke.png' %}" style="min-height: 48px; vertical-align: middle" alt="自主选课">
-                                <h5 style="height: 60px; font-size: 14px; padding: 0px 0px 15px 0px; color: black">自主选课</h5>
+                            <a href="#" style="text-decoration: none" target="_blank" title="申请新课">
+                                <img src="{% static 'image/zizhuxuanke.png' %}" style="min-height: 48px; vertical-align: middle" alt="申请新课">
+                                <h5 style="height: 60px; font-size: 14px; padding: 0px 0px 15px 0px; color: black">申请新课</h5>
                             </a>
                         </li>
                         <li class="col-md-4 col-sm-4 col-xs-6" style="text-align: center; font-size: 14px">
-                            <a href="#" style="text-decoration: none" target="_blank" title="学生成绩查询">
-                                <img src="{% static 'image/chengjichaxun.png' %}" style="min-height: 48px; vertical-align: middle" alt="学生成绩查询">
-                                <h5 style="height: 60px; font-size: 14px; padding: 0px 0px 15px 0px; color: black">学生成绩查询</h5>
+                            <a href="#" style="text-decoration: none" target="_blank" title="学生成绩管理">
+                                <img src="{% static 'image/chengjichaxun.png' %}" style="min-height: 48px; vertical-align: middle" alt="学生成绩管理">
+                                <h5 style="height: 60px; font-size: 14px; padding: 0px 0px 15px 0px; color: black">学生成绩管理</h5>
                             </a>
                         </li>
                     </ul>
@@ -129,8 +129,8 @@
                                             <img src="{% static 'image/me.jpg' %}"  class="media-object" alt="110*110" style="width: 110px; height: 110px; float: left; border-radius: 55px; margin: 20px 10px 20px 5px; display: block; vertical-align: middle; border: 0px;">
                                         </a>
                                         <div class="media-body" style="margin-top: 20px; display: table-cell; vertical-align: top;  overflow: hidden; zoom: 1;">
-                                            <h4 class="media-heading" style="font-weight: bold; font-size: 15px; padding: 5px;" >{{ student.student_name }}</h4>
-                                            <p style="color: #7a7a7a; font: normal 11px/22px SimSun; padding-left: 5px;">{{ student.get_student_college_display}} {{ student.student_class }}</p>
+                                            <h4 class="media-heading" style="font-weight: bold; font-size: 15px; padding: 5px;" >{{ teacher.teacher_name }}</h4>
+                                            <p style="color: #7a7a7a; font: normal 11px/22px SimSun; padding-left: 5px;">{{ teacher.get_teacher_department_display}} {{ teacher.get_teacher_academic_title_display }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -152,7 +152,7 @@
                                             </h5>
                                             <div class="list-group">
                                                 {% for i in notice %}
-                                                <a href="#" target="_blank" class="list-group-item" style="width: 100%; float: left; border: 0px none; padding: 0px 5px 0px 15px; margin-bottom: 0px; line-height: 28px; font-family: SimSun; border-top-left-radius: 4px; border-top-right-radius: 4px; color: #050505; display: block; position: relative;text-decoration: none;">
+                                                <a href="{% url 'fix' i.notice_id 5  %}" target="_blank" class="list-group-item" style="width: 100%; float: left; border: 0px none; padding: 0px 5px 0px 15px; margin-bottom: 0px; line-height: 28px; font-family: SimSun; border-top-left-radius: 4px; border-top-right-radius: 4px; color: #050505; display: block; position: relative;text-decoration: none;">
                                                     <span style="float: left; color: #717171; font: normal 12px/28px SimSun">
                                                         <span style="color: red">【置顶】</span>
                                                         <span style="color: black">【通知】</span>
@@ -180,21 +180,17 @@
                                 }
                             </style>
                             <h5 style="width: 100%; height: 32px; border-bottom: #eeeeee; margin: 0px; line-height: 1.1; color: inherit; display: table-cell; vertical-align: middle;">
-                                <span style="font-weight: bold; font-size: 15px; padding-left: 5px;">课表</span>
+                                <span style="font-weight: bold; font-size: 15px; padding-left: 5px;">授课表</span>
                             </h5>
-                            <a href="#" target="_blank" class="list-group-item" style="width: 100%; height: 39px; float: left; border: 0px none; border-bottom: 1px dashed #c0c0c0; padding: 0px 15px; margin-bottom: 0px; line-height: 39px">
-                                <span style="padding-top: 5px; margin-left: -12px; float: left; color: #6e6e6e; font: normal 12px/30px SimSun;">
-                                    1-17周(11-13节)-星期一-数据库原理-北区-A505-韩永明
-                                </span>
-                            </a>
-                            <a href="#" target="_blank" class="list-group-item" style="width: 100%; height: 39px; float: left; border: 0px none; border-bottom: 1px dashed #c0c0c0; padding: 0px 15px; margin-bottom: 0px; line-height: 39px">
-                                <span style="padding-top: 5px; margin-left: -12px; float: left; color: #6e6e6e; font: normal 12px/30px SimSun;">
-                                    1-16周(6-7节)-星期一-体育(四)-体育场-篮球场2-冯红静
-                                </span>
-                            </a>
-
+                            {% for i in course_arrangement %}
+                                <a href="{% url 'fix' teacher.teacher_id 6  %}" target="_blank" class="list-group-item" style="width: 100%; height: 39px; float: left; border: 0px none; border-bottom: 1px dashed #c0c0c0; padding: 0px 15px; margin-bottom: 0px; line-height: 39px">
+                                    <span style="padding-top: 5px; margin-left: -12px; float: left; color: #6e6e6e; font: normal 12px/30px SimSun;">
+                                        {{ i.week }}周({{ i.session }}节)-{{ i.weekday }}-{{ i.course_id.course_name }}-{{ i.location }}-{{ i.teacher_id.teacher_name }}
+                                    </span>
+                                </a>
+                            {% endfor %}
                             <div style="margin-bottom: 30px;">
-                                <a href="#" target="_blank" style="color: #337ab7; text-decoration: none; font-size: 14px" >
+                                <a href="{% url 'fix' teacher.teacher_id 6  %}" target="_blank" style="color: #337ab7; text-decoration: none; font-size: 14px" >
                                     <p align="right">
                                         ...更多
                                     </p>
@@ -217,15 +213,12 @@
                             <h5 style="width: 100%; height: 32px; border-bottom: #eeeeee; margin: 0px; line-height: 1.1; color: inherit; display: table-cell; vertical-align: middle;">
                                 <span style="font-weight: bold; font-size: 15px; padding-left: 5px;">成绩</span>
                             </h5>
-                            {% for cou in course_list %}
-
                                 <a href="#" target="_blank" class="list-group-item" style="width: 100%; height: 39px; float: left; border: 0px none; border-bottom: 1px dashed #c0c0c0; padding: 0px 15px; margin-bottom: 0px; line-height: 39px">
                                     <span style="padding-top: 5px; margin-left: -12px; float: left; color: #6e6e6e; font: normal 12px/30px SimSun;">
-                                        {{ cou.term }}-{{ cou.name }}
+
                                     </span>
-                                    <span class="time float_r" style="color: #9e9c9c; float: right";>{{ cou.grade }}</span>
+                                    <span class="time float_r" style="color: #9e9c9c; float: right";></span>
                                 </a>
-                            {% endfor %}
                             <div style="margin-bottom: 30px;">
                                 <a href="#" target="_blank" style="color: #337ab7; text-decoration: none; font-size: 14px" >
                                     <p align="right">

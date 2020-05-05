@@ -185,7 +185,7 @@
                             {% for i in select_list %}
                             <a href="{% url 'fix' student.student_id 1  %}" target="_blank" class="list-group-item" style="width: 100%; height: 39px; float: left; border: 0px none; border-bottom: 1px dashed #c0c0c0; padding: 0px 15px; margin-bottom: 0px; line-height: 39px">
                                 <span style="padding-top: 5px; margin-left: -12px; float: left; color: #6e6e6e; font: normal 12px/30px SimSun;">
-                                   {{ i.time }}-{{ i.week }}-{{ i.name }}-{{ i.location }}-{{ i.teacher }}
+                                   {{ i.weekday }}周({{ i.time }}节)-{{ i.week }}-{{ i.name }}-{{ i.location }}-{{ i.teacher }}
                                 </span>
                             </a>
                             {% endfor %}
