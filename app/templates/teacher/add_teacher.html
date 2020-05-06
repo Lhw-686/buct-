@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load staticfiles %}
+    <meta charset="utf-8"/>
+    <title>添加教师</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body{
+            background-color: rgb(240, 240, 240);
+        }
+    </style>
+</head>
+<body>
+    {% if is_add %}
+        <script>
+            window.onload=function () {
+                alert("添加成功！")
+            }
+        </script>
+    {% endif %}
+    <div style="background: #0483d4; border: 1px solid #e7e7e7;line-height: 60px; margin-bottom: 15px">
+        <img src="{% static 'image/logo_jw_w2.png' %}" style="padding-left: 80px">
+        <span style="color: white; font-size: 25px; vertical-align: middle">添加教师</span>
+    </div>
+    <!--top_end-->
+    <div class="container" style="margin-left: 70px; margin-top: 1px; padding: 0px; margin-right: 70px; width: auto">
+        <form action="/add_teacher/" method="post">
+            {% csrf_token %}
+            <div class="row" style="background: white; margin-top: 15px;">
+                <div class="col-md-12" style="border-bottom: 1px solid #eeeeee; font-weight: bold; font-size: 20px; padding: 5px; line-height: 80px;">
+                    <center>添加教师</center>
+                </div>
+                <div class="col-md-4" >
+                    <ul style="list-style: none">
+                        <li>
+                            <h4>工号:</h4>
+                            <span><input type="text" class="form-control" name="teacher_id" required autocomplete="off"></span>
+                        </li>
+                        <li>
+                            <h4>性别:</h4>
+                            <span>
+                                <select name="sex" class="form-control">
+                                    {% for i in sex %}
+                                        <option value="{{ i }}">{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </span>
+                        </li>
+                        <li>
+                            <h4>学院:</h4>
+                            <span>
+                                <select name="teacher_department" class="form-control">
+                                    {% for i in college %}
+                                        <option value="{{ i }}">{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </span>
+                        </li>
+                        <li>
+                            <h4>手机号码:</h4>
+                            <span><input type="text" class="form-control" name="phone" required  autocomplete="off"></span>
+                        </li>
+                        <li>
+                            <h4>入职日期:</h4>
+                            <span><input type="text" class="form-control" name="teacher_come_year" required></span>
+                        </li>
+
+                        <li>
+                            <h4>出生日期:</h4>
+                            <span><input type="text" class="form-control" name="teacher_birthday" required></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <ul style="list-style: none">
+                        <li>
+                            <h4>姓名:</h4>
+                            <span><input type="text" class="form-control" name="teacher_name" required></span>
+                        </li>
+                        <li>
+                            <h4>民族:</h4>
+                            <span>
+                                <select name="teacher_nation" class="form-control">
+                                    {% for i in nation %}
+                                        <option value="{{ i }}">{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </span>
+                        </li>
+                        <li>
+                            <h4>职称:</h4>
+                            <span>
+                                {{ teacher.get_teacher_academic_title_display }}
+                                <select name="teacher_academic_title" class="form-control">
+                                    {% for i in academic_title %}
+                                        <option value="{{ i }}">{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </span>
+                        </li>
+                        <li>
+                            <h4>邮件地址:</h4>
+                            <span><input type="text" class="form-control" name="email" required></span>
+                        </li>
+                        <li>
+                            <h4>省份:</h4>
+                            <span><input type="text" class="form-control" name="teacher_province" required></span>
+                        </li>
+
+                        <li>
+                            <h4>微信号码:</h4>
+                            <span><input type="text" class="form-control" name="teacher_wechat" required></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4" >
+                    <ul style="list-style: none">
+                        <li>
+                            <h4>年龄:</h4>
+                            <span><input type="text" class="form-control" name="teacher_age" required></span>
+                        </li>
+                        <li>
+                            <h4>政治面貌:</h4>
+                            <span>
+                                <select name="teacher_political_status" class="form-control">
+                                    {% for i in political_status %}
+                                        <option value="{{ i }}">{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </span>
+                        </li>
+                        <li>
+                            <h4>学位:</h4>
+                            <span>
+                                <select name="teacher_degree" class="form-control">
+                                    {% for i in degree %}
+                                        <option value="{{ i }}">{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </span>
+                        </li>
+                        <li>
+                            <h4>毕业院校:</h4>
+                            <span><input type="text" class="form-control" name="teacher_graduate_school" required></span>
+                        </li>
+                        <li>
+                            <h4>城市:</h4>
+                            <span><input type="text" class="form-control" name="teacher_city" required></span>
+                        </li>
+                        <li>
+                            <h4>QQ号码:</h4>
+                            <span><input type="text" class="form-control" name="teacher_qq" required></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-12" style="border-top: 1px solid #eeeeee; font-weight: bold; font-size: 20px; padding: 5px; line-height: 80px;">
+                    <span>
+                        <button type="submit" class="btn btn-primary btn-block pull-right" style="margin-top: 20px; margin-bottom: 20px; width: 100px; margin-right: 40px">提&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp交</button>
+                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="footer" style="padding: 25px">
+	<p style="text-align: center; color: rgb(128, 153, 175)">版权所有&copy; Copyright 1999-2017  正方软件股份有限公司　　中国·杭州西湖区紫霞街176号 互联网创新创业园2号301</p>
+    </div>
+</body>
+</html>

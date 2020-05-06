@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load staticfiles %}
+    <meta charset="utf-8"/>
+    <title>发布公告</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body{
+            background-color: rgb(240, 240, 240);
+        }
+    </style>
+</head>
+<body>
+    {% if is_add %}
+        <script>
+            window.onload=function () {
+                alert("发布成功！")
+            }
+        </script>
+    {% endif %}
+    <div style="background: #0483d4; border: 1px solid #e7e7e7;line-height: 60px; margin-bottom: 15px">
+        <img src="{% static 'image/logo_jw_w2.png' %}" style="padding-left: 80px">
+        <span style="color: white; font-size: 25px; vertical-align: middle">发布公告</span>
+    </div>
+    <!--top_end-->
+    <div class="container" style="margin-left: 70px; margin-top: 1px; padding: 0px; margin-right: 70px; width: auto; background-color: white; height: 600px;">
+        <div class="row">
+            <form action="/add_notice/" method="post">
+                {% csrf_token %}
+                <div class="col-md-12" style="line-height: 25px;border: 1px solid #eeeeee;">
+                    <h5 style="font-size: 30px; font-family: 'Microsoft Yahei'; margin-bottom: 20px; ">请输入公告内容</h5>
+                    <div class="col-md-8">
+                    <input type="text" name="title" placeholder="请输入公告标题" class="form-control" style="margin-bottom: 20px;" required>
+                    </div>
+                    <div class="col-md-4"></div>
+                </div>
+                <div class="col-md-12" style="margin-top: 20px">
+                    <div class="col-md-8">
+                    <textarea name="content" placeholder="请输入公告内容" class="form-control" required style="height: 300px;"></textarea>
+                        <div class="col-md-10"></div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary btn-block pull-right" style="margin-top: 40px">发布公告</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="footer" style="padding: 25px">
+	<p style="text-align: center; color: rgb(128, 153, 175)">版权所有&copy; Copyright 1999-2017  正方软件股份有限公司　　中国·杭州西湖区紫霞街176号 互联网创新创业园2号301</p>
+    </div>
+</body>
+</html>

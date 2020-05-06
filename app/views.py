@@ -317,7 +317,14 @@ def student_information_fix(request, id, status):
         user = User.objects.get(Q(account=id) & Q(identity='teacher'))
         return render(request, 'teacher/teacher_information_fix.html',
                       {'teacher': teacher, 'user': user, 'is_fix': is_fix})
-
+    elif status == '8':
+        teacher = Teacher.objects.get(teacher_id=id)
+        user = User.objects.get(Q(account=id) & Q(identity='teacher'))
+        return render(request, 'teacher/teacher_add_course.html',
+                      {'teacher': teacher, 'user': user})
+    elif status == '9':
+        error = False
+        return render(request, 'teacher/admin.html', {'error':error})
 
 def student_submit_fix(request):
     id = request.POST['id']
@@ -393,7 +400,7 @@ def find_schedule(request):
         course = CourseArrangement.objects.get(Q(course_id=i.course_id) & Q(term=year_number))
         course_list.append({'name': course.course_id.course_name, 'week': course.weekday, 'time': course.session, 'location': course.location, 'teacher': course.teacher_id.teacher_name, 'weekday': course.week})
     return render(request, 'student/student_schedule.html', {'student': student, 'course': course_list, 'term': term})
-    '''后续有时间需要在课程安排表里面加入学期'''
+
 
 def find_course_schedule(request):
     id = request.POST.get('id')
@@ -533,7 +540,139 @@ def cancel_select(request):
                   {'course': course, 'student': student, 'is_selected': is_selected, 'selected': selected_list,
                    'is_select': is_select, 'term': time})
 
+def add_course(request):
+    teacher_id = request.POST.get('id')
+    course_id = request.POST.get('cid')
+    course_name = request.POST.get('cname')
+    college = request.POST.get('college')
+    pre_course_id = request.POST.get('pcid')
+    pre_course_name = request.POST.get('pcname')
+    course_introduce = request.POST.get('introduce')
+    Course.objects.create(course_id=course_id, course_name=course_name, course_college=college, course_pre_id=pre_course_id, course_pre_name=pre_course_name, course_introduce=course_introduce)
 
+
+def is_admin(request):
+    password = request.POST.get('password')
+    if password == 'buctupupgo':
+        return render(request, 'teacher/admin_index.html')
+    else:
+        error = True
+        return render(request, 'teacher/admin.html', {'error': error})
+
+def admin(request, status):
+    college = (
+        '信息科学与技术学院', '材料科学与工程学院', '机电工程学院',
+        '化学工程学院', '经济管理学院', '化学学院',
+        '数理学院', '文法学院', '生命科学与技术学院',
+        '继续教育学院', '马克思主义学院', '国际教育学院',
+        '侯德榜工程师学院', '巴黎居里工程师学院',
+    )
+    nation = (
+        '汉族', '满族', '回族', '藏族', '维吾尔族', '苗族', '彝族',
+        '壮族', '布依族', '侗族', '瑶族', '白族', '土家族',
+        '哈尼族', '哈萨克族', '傣族', '傈僳族', '佤族', '畲族', '高山族',
+        '拉祜族', '水族', '东乡族', '纳西族', '景颇族', '柯尔克孜族', '土族',
+        '达斡尔族', '仫佬族', '羌族', '布朗族', '撒拉族', '毛南族', '仡佬族',
+        '锡伯族', '阿昌族', '普米族', '朝鲜族', '塔吉克族', '怒族', '乌孜别克族',
+        '俄罗斯族', '鄂温克族', '德昂族', '保安族', '裕固族', '京族', '塔塔尔族',
+        '独龙族', '鄂伦春族', '赫哲族', '门巴族', '珞巴族', '基诺族', '黎族',
+    )
+    language = ('英语', '法语', '日语', '俄语',)
+    sex = ('男', '女')
+    statu = ('在读', '毕业')
+    political_status = ('中共党员', '共青团员', '群众',)
+    academic_title = ('助教', '讲师', '副教授', '教授',)
+    degree = ('学士', '硕士', '博士',)
+    if status == '1':
+        is_add = False
+        return render(request, 'teacher/add_student.html', {'college': college, 'nation': nation, 'language': language, 'sex': sex, 'status': statu, 'political_status': political_status, 'is_add': is_add})
+    elif status == '2':
+        is_add = False
+        return render(request, 'teacher/add_teacher.html', {'college': college, 'nation': nation, 'sex': sex, 'political_status': political_status, 'degree': degree, 'academic_title': academic_title, 'is_add': is_add})
+    elif status == '3':
+        pass
+    elif status == '4':
+        pass
+    elif status == '5':
+        return render(request, 'teacher/add_notice.html', {'is_add': False})
+
+def add_notice(request):
+    title = request.POST.get('title')
+    content = request.POST.get('content')
+    is_add = True
+    Notice.objects.create(notice_title=title, notice_content=content)
+    return render(request, 'teacher/add_notice.html', {'is_add': is_add})
+
+def add_student(request):
+    is_add = True
+    student_id = request.POST.get('student_id')
+    sex = request.POST.get('sex')
+    student_college = request.POST.get('student_college')
+    phone = request.POST.get('phone')
+    student_come_year = request.POST.get('student_come_year')
+    student_province = request.POST.get('student_province')
+    student_birthday = request.POST.get('student_birthday')
+    student_name = request.POST.get('student_name')
+    student_nation = request.POST.get('student_nation')
+    student_major = request.POST.get('student_major')
+    email = request.POST.get('email')
+    student_status = request.POST.get('student_status')
+    student_city = request.POST.get('student_city')
+    student_wechat = request.POST.get('student_wechat')
+    student_age = request.POST.get('student_age')
+    student_political_status = request.POST.get('student_political_status')
+    student_class = request.POST.get('student_class')
+    student_foreign_language = request.POST.get('student_foreign_language')
+    student_high_school = request.POST.get('student_high_school')
+    student_qq = request.POST.get('student_qq')
+    Student.objects.create(
+        student_id=student_id, student_sex=sex, student_college=student_college,
+        student_city=student_city, student_name=student_name, student_class=student_class,
+        student_major=student_major, student_nation=student_nation, student_qq=student_qq,
+        student_status=student_status, student_wechat=student_wechat, student_come_year=student_come_year,
+        student_foreign_language=student_foreign_language, student_birthday=student_birthday,
+        student_high_school=student_high_school, student_province=student_province,
+        student_political_status=student_political_status, student_age=student_age,
+    )
+    User.objects.create(
+        account=student_id, password=student_id, identity='学生', phone=phone, email=email, name=student_name,
+    )
+    return render(request, 'teacher/add_student.html', {'is_add': is_add})
+
+def add_teacher(request):
+    is_add = True
+    teacher_id = request.POST.get('teacher_id')
+    sex = request.POST.get('sex')
+    teacher_department = request.POST.get('teacher_department')
+    phone = request.POST.get('phone')
+    teacher_come_year = request.POST.get('teacher_come_year')
+    teacher_province = request.POST.get('teacher_province')
+    teacher_birthday = request.POST.get('teacher_birthday')
+    teacher_name = request.POST.get('teacher_name')
+    teacher_nation = request.POST.get('teacher_nation')
+    teacher_degree = request.POST.get('teacher_degree')
+    email = request.POST.get('email')
+    teacher_city = request.POST.get('teacher_city')
+    teacher_wechat = request.POST.get('teacher_wechat')
+    teacher_age = request.POST.get('teacher_age')
+    teacher_political_status = request.POST.get('teacher_political_status')
+    teacher_graduate_school = request.POST.get('teacher_graduate_school')
+    teacher_qq = request.POST.get('teacher_qq')
+    teacher_academic_title = request.POST.get('teacher_academic_title')
+    Teacher.objects.create(
+        teacher_id=teacher_id, teacher_name=teacher_name, teacher_age=teacher_age,
+        teacher_sex=sex, teacher_nation=teacher_nation, teacher_political_status=teacher_political_status,
+        teacher_department=teacher_department, teacher_degree=teacher_degree,
+        teacher_come_year=teacher_come_year, teacher_province=teacher_province,
+        teacher_city=teacher_city, teacher_birthday=teacher_birthday,
+        teacher_qq=teacher_qq, teacher_wechat=teacher_wechat,
+        teacher_graduate_school=teacher_graduate_school,
+        teacher_academic_title=teacher_academic_title,
+    )
+    User.objects.create(
+        account=teacher_id, password=teacher_id, identity='教师', phone=phone, email=email, name=teacher_name,
+    )
+    return render(request, 'teacher/add_teacher.html', {'is_add': is_add})
 '''
 def register_information(request):
     name = request.POST.get('name')

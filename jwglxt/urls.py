@@ -37,7 +37,13 @@ urlpatterns = [
     path('find_schedule/', views.find_schedule),
     path('find_course_schedule/', views.find_course_schedule),
     path('find_course/', views.find_course),
+    path('add_course/', views.add_course),
     path('select_course/', views.select_course),
     path('cancel_select/', views.cancel_select),
+    path('is_admin/', views.is_admin),
+    url('is_admin/(\d+)/$', views.admin, name='admin'),
+    path('add_notice/', views.add_notice),
+    path('add_student/', views.add_student),
+    path('add_teacher/', views.add_teacher),
     url(r'favicon.ico/', RedirectView.as_view(url=r'/static/image/favicon.ico')),
 ]

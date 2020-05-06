@@ -56,23 +56,23 @@ class Student(models.Model):
     student_id = models.CharField(max_length=20, verbose_name='学号', primary_key=True, unique=True, db_index=True)
     student_name = models.CharField(max_length=20, verbose_name='姓名', null=True)
     student_age = models.PositiveSmallIntegerField(verbose_name='年龄', null=True)
-    student_sex = models.CharField(max_length=20, choices=sex, default='男', verbose_name='性别', null=True)
-    student_nation = models.CharField(max_length=20, choices=nation, default='汉族', verbose_name='民族', null=True)
-    student_political_status = models.CharField(max_length=20, choices=political_status, default='群众', verbose_name='政治面貌', null=True)
-    student_come_year = models.DateField(verbose_name='入学日期', null=True)
-    student_college = models.CharField(max_length=20, choices=college, default='信息科学与技术学院', verbose_name='学院', null=True)
+    student_sex = models.CharField(max_length=20, default='男', verbose_name='性别', null=True)
+    student_nation = models.CharField(max_length=20, default='汉族', verbose_name='民族', null=True)
+    student_political_status = models.CharField(max_length=20, default='群众', verbose_name='政治面貌', null=True)
+    student_come_year = models.CharField(max_length=40, verbose_name='入学日期', null=True)
+    student_college = models.CharField(max_length=20, default='信息科学与技术学院', verbose_name='学院', null=True)
     student_major = models.CharField(max_length=20, verbose_name='专业', null=True)
     student_class = models.CharField(max_length=20, verbose_name='班级', null=True)
     student_province = models.CharField(max_length=20, verbose_name='省份', null=True)
     student_city = models.CharField(max_length=20, verbose_name='城市', null=True)
-    student_birthday = models.DateField(verbose_name='出生日期', null=True)
+    student_birthday = models.CharField(max_length=40, verbose_name='出生日期', null=True)
     #student_phone = models.CharField(max_length=20, verbose_name='手机号码', null=True)
     student_qq = models.CharField(max_length=20, verbose_name='QQ号码', null=True)
     student_wechat = models.CharField(max_length=20, verbose_name='微信号码', null=True)
     #student_email = models.EmailField(verbose_name='邮件地址', null=True)
     student_high_school = models.CharField(max_length=20, verbose_name='毕业高中', null=True)
-    student_foreign_language = models.CharField(max_length=20, choices=language, default='英语', verbose_name='外语', null=True)
-    student_status = models.CharField(max_length=20, choices=status, default='在读', verbose_name='状态', null=True)
+    student_foreign_language = models.CharField(max_length=20, default='英语', verbose_name='外语', null=True)
+    student_status = models.CharField(max_length=20, default='在读', verbose_name='状态', null=True)
     #student_image
 
     class Meta:
@@ -86,16 +86,16 @@ class Teacher(models.Model):
     teacher_id = models.CharField(max_length=20, verbose_name='工号', primary_key=True, unique=True, db_index=True)
     teacher_name = models.CharField(max_length=20, verbose_name='姓名', null=True)
     teacher_age = models.PositiveSmallIntegerField(verbose_name='年龄', null=True)
-    teacher_sex = models.CharField(max_length=20, choices=sex, default='男', verbose_name='性别', null=True)
-    teacher_nation = models.CharField(max_length=20, choices=nation, default='汉族', verbose_name='民族', null=True)
-    teacher_political_status = models.CharField(max_length=20, choices=political_status, default='群众', verbose_name='政治面貌', null=True)
-    teacher_department = models.CharField(max_length=20, verbose_name='学院', choices=college, default='信息科学与技术学院', null=True)
-    teacher_academic_title = models.CharField(max_length=20, choices=academic_title, default='教授', verbose_name='职称', null=True)
-    teacher_degree = models.CharField(max_length=20, choices=degree, default='学士', verbose_name='学位', null=True)
-    teacher_come_year = models.DateTimeField(verbose_name='入职日期', null=True) #去掉time
+    teacher_sex = models.CharField(max_length=20, default='男', verbose_name='性别', null=True)
+    teacher_nation = models.CharField(max_length=20, default='汉族', verbose_name='民族', null=True)
+    teacher_political_status = models.CharField(max_length=20, default='群众', verbose_name='政治面貌', null=True)
+    teacher_department = models.CharField(max_length=20, verbose_name='学院', default='信息科学与技术学院', null=True)
+    teacher_academic_title = models.CharField(max_length=20, default='教授', verbose_name='职称', null=True)
+    teacher_degree = models.CharField(max_length=20, default='学士', verbose_name='学位', null=True)
+    teacher_come_year = models.CharField(max_length=80, verbose_name='入职日期', null=True) #去掉time
     teacher_province = models.CharField(max_length=20, verbose_name='省份', null=True)
     teacher_city = models.CharField(max_length=20, verbose_name='城市', null=True)
-    teacher_birthday = models.DateTimeField(verbose_name='出生日期', null=True) #去掉time
+    teacher_birthday = models.CharField(max_length=255, verbose_name='出生日期', null=True) #去掉time
     #teacher_phone = models.CharField(max_length=20, verbose_name='手机号码', null=True)
     teacher_qq = models.CharField(max_length=20, verbose_name='QQ号码', null=True)
     teacher_wechat = models.CharField(max_length=20, verbose_name='微信号码', null=True)
@@ -110,8 +110,8 @@ class Course(models.Model):
     '''课程信息表'''
     course_id = models.CharField(max_length=20, verbose_name='课程号', primary_key=True, unique=True, db_index=True)
     course_name = models.CharField(max_length=20, verbose_name='课程名', unique=True)
-    course_status = models.CharField(max_length=20, verbose_name='课程状态')
-    course_college = models.CharField(max_length=20, choices=college, default='信息科学与技术', verbose_name='开课学院')
+    course_status = models.CharField(max_length=20, default='未开', verbose_name='课程状态')
+    course_college = models.CharField(max_length=20, default='信息科学与技术学院', verbose_name='开课学院')
     course_pre_id = models.CharField(max_length=20, verbose_name='先修课程号')
     course_pre_name = models.CharField(max_length=20, verbose_name='先修课程名')
     course_introduction = models.CharField(max_length=1000, verbose_name='课程介绍')
@@ -175,7 +175,7 @@ class Message(models.Model):
 
 class Notice(models.Model):
     '''公告表'''
-    notice_id = models.CharField(max_length=20, verbose_name='通知号', primary_key=True, unique=True, db_index=True)
+    notice_id = models.AutoField(primary_key=True)
     notice_send_time = models.DateTimeField(auto_now_add=True, verbose_name='发送日期')
     notice_content = models.CharField(max_length=1000, verbose_name='通知内容')
     notice_title = models.CharField(max_length=255, verbose_name='通知标题')
@@ -201,7 +201,7 @@ class User(models.Model):
     '''用户登录表'''
     account = models.CharField(max_length=20, verbose_name='账号')
     name = models.CharField(max_length=20, verbose_name='姓名')
-    identity = models.CharField(max_length=20, choices=ident, default='学生', verbose_name='身份')
+    identity = models.CharField(max_length=20, default='学生', verbose_name='身份')
     password = models.CharField(max_length=32, verbose_name='密码')
     phone = models.CharField(max_length=11, verbose_name='手机号码', unique=True)
     email = models.EmailField(verbose_name='邮件地址', unique=True)

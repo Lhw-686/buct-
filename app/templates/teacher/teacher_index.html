@@ -68,7 +68,7 @@
                 </a>
                  <ul class="dropdown-menu" role="menu">
                     <li>
-                        <a href="" target="_blank">授课查询</a>
+                        <a href="{% url 'fix' teacher.teacher_id 6  %}" target="_blank">授课查询</a>
                     </li>
                      <li>
                         <a href="#">学生成绩管理</a>
@@ -97,13 +97,13 @@
                             </a>
                         </li>
                         <li class="col-md-4 col-sm-4 col-xs-6" style="text-align: center; font-size: 14px">
-                            <a href="#" style="text-decoration: none" target="_blank" title="授课查询">
+                            <a href="{% url 'fix' teacher.teacher_id 6  %}" style="text-decoration: none" target="_blank" title="授课查询">
                                 <img src="{% static 'image/kebiaochaxun.png' %}" style="min-height: 48px; vertical-align: middle" alt="授课查询">
                                 <h5 style="height: 60px; font-size: 14px; padding: 0px 0px 15px 0px; color: black">授课查询</h5>
                             </a>
                         </li>
                         <li class="col-md-4 col-sm-4 col-xs-6" style="text-align: center; font-size: 14px">
-                            <a href="#" style="text-decoration: none" target="_blank" title="申请新课">
+                            <a href="{% url 'fix' teacher.teacher_id 8 %}" style="text-decoration: none" target="_blank" title="申请新课">
                                 <img src="{% static 'image/zizhuxuanke.png' %}" style="min-height: 48px; vertical-align: middle" alt="申请新课">
                                 <h5 style="height: 60px; font-size: 14px; padding: 0px 0px 15px 0px; color: black">申请新课</h5>
                             </a>
@@ -112,6 +112,12 @@
                             <a href="#" style="text-decoration: none" target="_blank" title="学生成绩管理">
                                 <img src="{% static 'image/chengjichaxun.png' %}" style="min-height: 48px; vertical-align: middle" alt="学生成绩管理">
                                 <h5 style="height: 60px; font-size: 14px; padding: 0px 0px 15px 0px; color: black">学生成绩管理</h5>
+                            </a>
+                        </li>
+                        <li class="col-md-4 col-sm-4 col-xs-6" style="text-align: center; font-size: 14px">
+                            <a href="{% url 'fix' teacher.teacher_id 9 %}" style="text-decoration: none" target="_blank" title="我是管理员">
+                                <img src="{% static 'image/ico_but19.png' %}" style="min-height: 48px; vertical-align: middle" alt="我是管理员">
+                                <h5 style="height: 60px; font-size: 14px; padding: 0px 0px 15px 0px; color: black">管理员</h5>
                             </a>
                         </li>
                     </ul>
@@ -130,7 +136,7 @@
                                         </a>
                                         <div class="media-body" style="margin-top: 20px; display: table-cell; vertical-align: top;  overflow: hidden; zoom: 1;">
                                             <h4 class="media-heading" style="font-weight: bold; font-size: 15px; padding: 5px;" >{{ teacher.teacher_name }}</h4>
-                                            <p style="color: #7a7a7a; font: normal 11px/22px SimSun; padding-left: 5px;">{{ teacher.get_teacher_department_display}} {{ teacher.get_teacher_academic_title_display }}</p>
+                                            <p style="color: #7a7a7a; font: normal 11px/22px SimSun; padding-left: 5px;">{{ teacher.teacher_department }} {{ teacher.teacher_academic_title }}</p>
                                         </div>
                                     </div>
                                 </div>

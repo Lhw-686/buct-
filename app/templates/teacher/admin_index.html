@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load staticfiles %}
+    <meta charset="utf-8">
+    <title>北京化工大学教务管理系统</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body{
+            background-color: rgb(240, 240, 240);
+        }
+        .line{
+            width: 100%;
+            margin: 0px;
+            background-color: white;
+            height: 50px;
+        }
+    </style>
+</head>
+<body class="body-container">
+    <div style="background: #0483d4; border: 1px solid #e7e7e7;line-height: 60px">
+        <div>
+            <img src="{% static 'image/logo_jw_w2.png' %}" style="padding-left: 80px"/>
+            <span style="color: white; font-size: 25px; vertical-align: middle">北京化工大学教务管理系统</span>
+            <a href="/">
+                <button onmouseover="this.style.backgroundColor='rgb(104,181,229)'" onmouseout="this.style.backgroundColor='#0483d4'" class="button" style="outline:none; float: right; color: white; background-color: #0483d4; height: 60px; border: 0px solid transparent; margin-right: 40px;">
+                    <img src="{% static 'image/user_logo.jpg' %}" class="img-circle" width="40" height="40" style="padding: 5px"/>
+                    <span class="glyphicon glyphicon-log-out" style="color: white; padding: 5px"></span>
+                    <span style="padding: 5px">退出</span>
+                </button>
+            </a>
+        </div>
+    </div>
+    <!--top_end-->
+    <div class="line">
+        <ul class="nav navbar-nav" role="tablist" style="margin-left: 100px;" >
+            <li class="active" >
+                <a href="#" style="color: black">主页</a>
+            </li>
+            <li class="dropdown">
+               <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: black">
+                    选课
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a href="#">自主选课</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: black">
+                    信息维护
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a href="" target="_blank" >教师个人信息维护</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: black">
+                    信息查询
+                    <span class="caret"></span>
+                </a>
+                 <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a href="" target="_blank">授课查询</a>
+                    </li>
+                     <li>
+                        <a href="#">学生成绩管理</a>
+                    </li>
+                     <li>
+                        <a href="#"></a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!--导航栏结束-->
+    <div class="container " style="margin-left: 70px; margin-top: 1px; padding: 0px; margin-right: 70px; width: auto" >
+        <div class="row">
+            <div class="col-md-3 col-sm-4">
+                <div style="background: white; margin-bottom: 15px">
+                    <h3 style="height: 42px; border-bottom: 1px solid #eeeeee;">
+                        <span style="color: black; font-size: 15px; font-weight: bolder;padding-left: 15px;">我的应用</span>
+                    </h3>
+                    <ul style="list-style: none; height: 502px; padding: 15px 0px;">
+                        <li class="col-md-4 col-sm-4 col-xs-6" style="text-align: center; font-size: 14px">
+                            <a href="{% url 'admin' 1 %}" style="text-decoration: none" target="_blank" title="添加学生">
+                                <img src="{% static 'image/xinxiweihu.png' %}" style="min-height: 48px; vertical-align: middle" alt="添加学生">
+                                <h5 style="height: 60px; font-size: 14px; padding: 0px 0px 15px 0px; color: black">添加学生</h5>
+                            </a>
+                        </li>
+                        <li class="col-md-4 col-sm-4 col-xs-6" style="text-align: center; font-size: 14px">
+                            <a href="{% url 'admin' 2 %}" style="text-decoration: none" target="_blank" title="添加教师">
+                                <img src="{% static 'image/kebiaochaxun.png' %}" style="min-height: 48px; vertical-align: middle" alt="添加教师">
+                                <h5 style="height: 60px; font-size: 14px; padding: 0px 0px 15px 0px; color: black">添加教师</h5>
+                            </a>
+                        </li>
+                        <li class="col-md-4 col-sm-4 col-xs-6" style="text-align: center; font-size: 14px">
+                            <a href="{% url 'admin' 3 %}" style="text-decoration: none" target="_blank" title="申请新课">
+                                <img src="{% static 'image/zizhuxuanke.png' %}" style="min-height: 48px; vertical-align: middle" alt="申请新课">
+                                <h5 style="height: 60px; font-size: 14px; padding: 0px 0px 15px 0px; color: black">申请新课</h5>
+                            </a>
+                        </li>
+                        <li class="col-md-4 col-sm-4 col-xs-6" style="text-align: center; font-size: 14px">
+                            <a href="{% url 'admin' 4 %}" style="text-decoration: none" target="_blank" title="安排课程">
+                                <img src="{% static 'image/chengjichaxun.png' %}" style="min-height: 48px; vertical-align: middle" alt="安排课程">
+                                <h5 style="height: 60px; font-size: 14px; padding: 0px 0px 15px 0px; color: black">安排课程</h5>
+                            </a>
+                        </li>
+                        <li class="col-md-4 col-sm-4 col-xs-6" style="text-align: center; font-size: 14px">
+                            <a href="{% url 'admin' 5 %}" style="text-decoration: none" target="_blank" title="发布公告">
+                                <img src="{% static 'image/ico_but19.png' %}" style="min-height: 48px; vertical-align: middle" alt="发布公告">
+                                <h5 style="height: 60px; font-size: 14px; padding: 0px 0px 15px 0px; color: black">发布公告</h5>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--左侧栏over-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--主体over-->
+    <div class="footer" style="text-align: center; color: white; font: normal 12px/20px SimSun; margin: 15px 0 0; background-color: #0483d4; padding: 10px; display: block; box-sizing: border-box;">
+        版权所有© Copyright 1999-2020 正方软件股份有限公司　　中国·杭州西湖区紫霞街176号 互联网创新创业园2号301
+    </div>
+    <!--底部over-->
+</body>
+</html>
