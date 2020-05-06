@@ -45,5 +45,6 @@ urlpatterns = [
     path('add_notice/', views.add_notice),
     path('add_student/', views.add_student),
     path('add_teacher/', views.add_teacher),
+    path('arrange_course/', views.arrange_course),
     url(r'favicon.ico/', RedirectView.as_view(url=r'/static/image/favicon.ico')),
 ]

@@ -112,8 +112,8 @@ class Course(models.Model):
     course_name = models.CharField(max_length=20, verbose_name='课程名', unique=True)
     course_status = models.CharField(max_length=20, default='未开', verbose_name='课程状态')
     course_college = models.CharField(max_length=20, default='信息科学与技术学院', verbose_name='开课学院')
-    course_pre_id = models.CharField(max_length=20, verbose_name='先修课程号')
-    course_pre_name = models.CharField(max_length=20, verbose_name='先修课程名')
+    course_pre_id = models.CharField(max_length=20, verbose_name='先修课程号', null=True)
+    course_pre_name = models.CharField(max_length=20, verbose_name='先修课程名', null=True)
     course_introduction = models.CharField(max_length=1000, verbose_name='课程介绍')
 
     class Meta:

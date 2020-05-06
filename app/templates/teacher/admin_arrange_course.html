@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load staticfiles %}
+    <meta charset="utf-8"/>
+    <title>安排课程</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: rgb(240, 240, 240);
+        }
+    </style>
+</head>
+<body>
+    {% if is_arrange == 1 %}
+        <script>
+            window.onload=function () {
+                alert("安排成功！")
+            }
+        </script>
+        {% elif is_arrange == 2 %}
+        <script>
+            window.onload=function () {
+                alert("此课程已经安排！")
+            }
+        </script>
+    {% endif %}
+    <div style="background: #0483d4; border: 1px solid #e7e7e7;line-height: 60px; margin-bottom: 15px">
+        <img src="{% static 'image/logo_jw_w2.png' %}" style="padding-left: 80px">
+        <span style="color: white; font-size: 25px; vertical-align: middle">安排课程</span>
+    </div>
+    <div class="container" style="margin-left: 70px; width: auto; background: white; margin-right: 70px; min-height: 600px;">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="panel-group" id="accordion" style="margin-top: 20px;">
+                    {% for i in course %}
+                        {% if i.course_status == '已开' %}
+                            <div class="panel panel-default">
+                                <div class="panel-heading" style="background: #0483d4; color: white">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                        href="#{{ i.course_id }}" style="text-decoration: none">
+                                            <span>{{ i.course_name }}</span>
+                                            <span class="pull-right">{{ i.course_id }}</span>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="{{ i.course_id }}" class="panel-collapse collapse ">
+                                    <div class="panel-body">
+                                        <form action="/arrange_course/" method="post">
+                                        {% csrf_token %}
+                                            <input hidden name="course_id" value="{{ i.course_id }}">
+                                            <div class="col-md-6">
+                                                <span>
+                                                    任课教师:
+                                                    <select name="teacher" class="form-control" style="margin-top: 6px; margin-bottom: 6px;">
+                                                        {% for j in teacher %}
+                                                            <option value="{{ j.teacher_id }}">{{ j.teacher_name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </span>
+                                                <span>
+                                                    开课学期:
+                                                    <input type="text" name="term" autocomplete="off" required class="form-control" style="margin-top: 6px; margin-bottom: 6px;">
+                                                </span>
+                                                <span>
+                                                    课程起始周:
+                                                    <input type="text" name="week" autocomplete="off" required class="form-control" style="margin-top: 6px; margin-bottom: 6px;">
+                                                </span>
+                                                <span>
+                                                    课程节次:
+                                                    <input type="text" name="session" autocomplete="off" required class="form-control" style="margin-top: 6px; margin-bottom: 6px;">
+                                                </span>
+                                                <span>
+                                                    上课日期:
+                                                    <input type="text" name="weekday" autocomplete="off" required class="form-control" style="margin-top: 6px; margin-bottom: 6px;">
+                                                </span>
+                                                <span>
+                                                    上课地点:
+                                                    <input type="text" name="location" autocomplete="off" required class="form-control" style="margin-top: 6px; margin-bottom: 6px;">
+                                                </span>
+                                                <span>
+                                                    课程状态:
+                                                    <select name="course_status"  class="form-control" style="margin-top: 6px; margin-bottom: 6px;">
+                                                        <option value="已开">已开</option>
+                                                        <option value="未开">未开</option>
+                                                    </select>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-6"></div>
+                                            <div class="col-md-12">
+                                                <button type="submit" class="btn btn-primary btn-sm  btn-group-vertical pull-right">
+                                                    安排课程
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% elif i.course_status == '未开' %}
+                            <div class="panel panel-default">
+                                <div class="panel-heading" style="background: rgb(193, 193, 193); color: white">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                        href="#{{ i.course_id }}" style="text-decoration: none">
+                                            <span>{{ i.course_name }}</span>
+                                            <span class="pull-right">{{ i.course_id }}</span>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="{{ i.course_id }}" class="panel-collapse collapse ">
+                                    <div class="panel-body">
+                                        <form action="/arrange_course/" method="post">
+                                        {% csrf_token %}
+                                            <input hidden name="course_id" value="{{ i.course_id }}">
+                                            <div class="col-md-6">
+                                                <span>
+                                                    任课教师:
+                                                    <select name="teacher" class="form-control" style="margin-top: 6px; margin-bottom: 6px;">
+                                                        {% for j in teacher %}
+                                                            <option value="{{ j.teacher_id }}">{{ j.teacher_name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </span>
+                                                <span>
+                                                    开课学期:
+                                                    <input type="text" name="term" autocomplete="off" required class="form-control" style="margin-top: 6px; margin-bottom: 6px;">
+                                                </span>
+                                                <span>
+                                                    课程起始周:
+                                                    <input type="text" name="week" autocomplete="off" required class="form-control" style="margin-top: 6px; margin-bottom: 6px;">
+                                                </span>
+                                                <span>
+                                                    课程节次:
+                                                    <input type="text" name="session" autocomplete="off" required class="form-control" style="margin-top: 6px; margin-bottom: 6px;">
+                                                </span>
+                                                <span>
+                                                    上课日期:
+                                                    <input type="text" name="weekday" autocomplete="off" required class="form-control" style="margin-top: 6px; margin-bottom: 6px;">
+                                                </span>
+                                                <span>
+                                                    上课地点:
+                                                    <input type="text" name="location" autocomplete="off" required class="form-control" style="margin-top: 6px; margin-bottom: 6px;">
+                                                </span>
+                                                <span>
+                                                    课程状态:
+                                                    <select name="course_status"  class="form-control" style="margin-top: 6px; margin-bottom: 6px;">
+                                                        <option value="已开">已开</option>
+                                                        <option value="未开">未开</option>
+                                                    </select>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-6"></div>
+                                            <div class="col-md-12">
+                                                <button type="submit" class="btn btn-primary btn-sm  btn-group-vertical pull-right">
+                                                    安排课程
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer" style="padding: 25px">
+	<p style="text-align: center; color: rgb(128, 153, 175)">版权所有&copy; Copyright 1999-2017  正方软件股份有限公司　　中国·杭州西湖区紫霞街176号 互联网创新创业园2号301</p>
+    </div>
+</body>
+</html>

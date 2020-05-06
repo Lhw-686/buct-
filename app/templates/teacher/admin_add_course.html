@@ -3,7 +3,7 @@
 <head>
     {% load staticfiles %}
     <meta charset="utf-8"/>
-    <title>申请新课</title>
+    <title>添加新课</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -14,9 +14,16 @@
     </style>
 </head>
 <body>
+    {% if is_add %}
+        <script>
+            window.onload=function () {
+                alert("添加成功！")
+            }
+        </script>
+    {% endif %}
     <div style="background: #0483d4; border: 1px solid #e7e7e7;line-height: 60px; margin-bottom: 15px">
         <img src="{% static 'image/logo_jw_w2.png' %}" style="padding-left: 80px">
-        <span style="color: white; font-size: 25px; vertical-align: middle">申请新课</span>
+        <span style="color: white; font-size: 25px; vertical-align: middle">添加新课</span>
     </div>
     <!--top_end-->
     <div class="container" style="margin-left: 70px; margin-top: 1px; padding: 0px; margin-right: 70px; width: auto; background-color: white; height: auto;">
@@ -27,7 +34,7 @@
             <div class="col-md-12">
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
-                    <form action="//" method="post">
+                    <form action="/add_course/" method="post">
                         {% csrf_token %}
                         <input hidden name="id" value="{{ teacher.teacher_id }}">
                         <h4>课程号码</h4>
@@ -57,7 +64,7 @@
                         <input type="text" name="pcname" class="form-control">
                         <h4>课程介绍</h4>
                         <textarea type="text" name="introduce" class="form-control"></textarea>
-                        <button type="submit" style="margin-top: 15px; margin-bottom: 15px" class="btn btn-default pull-right" >提 交 申 请</button>
+                        <button type="submit" style="margin-top: 15px; margin-bottom: 15px" class="btn btn-default pull-right" >提 交</button>
                     </form>
                 </div>
                 <div class="col-md-3"></div>
