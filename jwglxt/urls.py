@@ -43,6 +43,7 @@ urlpatterns = [
     path('is_admin/', views.is_admin),
     url('is_admin/(\d+)/$', views.admin, name='admin'),
     path('add_notice/', views.add_notice),
+    path('grade_manage/', views.grade_manage),
     path('add_student/', views.add_student),
     path('add_teacher/', views.add_teacher),
     path('arrange_course/', views.arrange_course),

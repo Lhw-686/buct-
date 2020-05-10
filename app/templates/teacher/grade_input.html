@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load staticfiles %}
+    <meta charset="utf-8"/>
+    <title>学生成绩录入</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body{
+            background-color: rgb(240, 240, 240);
+        }
+    </style>
+</head>
+<body>
+    <div style="background: #0483d4; border: 1px solid #e7e7e7;line-height: 60px; margin-bottom: 15px">
+        <img src="{% static 'image/logo_jw_w2.png' %}" style="padding-left: 80px">
+        <span style="color: white; font-size: 25px; vertical-align: middle">学生成绩录入</span>
+    </div>
+    <!--top_end-->
+    <div class="container" style="margin-left: 70px; margin-top: 1px; padding: 0px; margin-right: 70px; width: auto; background-color: white; height: 600px;">
+        <div style="margin-top: 40px;">
+            <div style="display: block; opacity: 1; transition: opacity 0.15s linear 0s; font-weight: bolder;">
+                <table style="width: 98%; margin-left: 10px;" class="table table-bordered text-center">
+                    <tbody>
+                        <tr>
+                            <td width="25%">
+                                <span class="time">学号</span>
+                            </td>
+                            <td width="25%">
+                                <span class="time">姓名</span>
+                            </td>
+                            <td width="25%">
+                                <span class="time">平时成绩</span>
+                            </td>
+                            <td width="25%">
+                                <span class="time">期末成绩</span>
+                            </td>
+                        </tr>
+                        {% for i in student %}
+                        <tr style="font-weight: normal">
+                            <td width="20%">
+                                <span class="time">{{ i.student_id.student_id }}</span>
+                            </td>
+                            <td width="20%">
+                                <span class="time">{{ i.student_id.student_name }}</span>
+                            </td>
+                            <td width="20%">
+                                <span class="time"><input type="text" name="student_id" class="form-control"></span>
+                                {{  }}
+                            </td>
+                            <td width="20%">
+                                <span class="time"></span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="footer" style="padding: 25px">
+	<p style="text-align: center; color: rgb(128, 153, 175)">版权所有&copy; Copyright 1999-2017  正方软件股份有限公司　　中国·杭州西湖区紫霞街176号 互联网创新创业园2号301</p>
+    </div>
+</body>
+</html>

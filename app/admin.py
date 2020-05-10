@@ -24,30 +24,19 @@ class TeacherAdmin(admin.ModelAdmin):
 class CourseAdmin(admin.ModelAdmin):
     list_display = ['course_id', 'course_name', 'course_status',
                     'course_college', 'course_pre_id', 'course_pre_name',
-                    'course_introduction'
+                    'course_introduction', 'course_scale', 'course_volume',
                     ]
 
 class SelectCourseAdmin(admin.ModelAdmin):
-    list_display = ['student_id', 'term', 'course_id', 'student_grade']
+    list_display = ['student_id', 'term', 'course_id', 'student_usual_grade', 'student_final_grade']
 
 class CourseArrangementAdmin(admin.ModelAdmin):
     list_display = ['course_id', 'term', 'teacher_id',
                     'week', 'session', 'location', 'weekday'
                     ]
 
-class SchoolTermAdmin(admin.ModelAdmin):
-    list_display = ['begin_year', 'end_year', 'number']
-
-class MessageAdmin(admin.ModelAdmin):
-    list_display = ['message_id', 'student_id', 'message_content',
-                    'message_send_time', 'message_status', 'message_title'
-                    ]
-
 class NoticeAdmin(admin.ModelAdmin):
     list_display = ['notice_id', 'notice_send_time', 'notice_content', 'notice_title']
-
-class SelectListAdmin(admin.ModelAdmin):
-    list_display = ['major', 'term', 'course_id', 'status', 'volume']
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ['account', 'identity', 'name', 'password', 'phone', 'email']
@@ -57,8 +46,5 @@ admin.site.register(Teacher, TeacherAdmin)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(SelectCourse, SelectCourseAdmin)
 admin.site.register(CourseArrangement, CourseArrangementAdmin)
-admin.site.register(SchoolTerm, SchoolTermAdmin)
-admin.site.register(Message, MessageAdmin)
 admin.site.register(Notice, NoticeAdmin)
-admin.site.register(SelectList, SelectListAdmin)
 admin.site.register(User, UserAdmin)

@@ -1,54 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
-sex = (
-        ('male', '男'),
-        ('female', '女'),
-    )
-ident = (
-        ('student', '学生'),
-        ('teacher', '教师'),
-    )
-college = (
-    ('1', '信息科学与技术学院'), ('2', '材料科学与工程学院'), ('3', '机电工程学院'),
-    ('4', '化学工程学院'), ('5', '经济管理学院'), ('6', '化学学院'),
-    ('7', '数理学院'), ('8', '文法学院'), ('9', '生命科学与技术学院'),
-    ('10', '继续教育学院'), ('11', '马克思主义学院'), ('12', '国际教育学院'),
-    ('13', '侯德榜工程师学院'), ('14', '巴黎居里工程师学院'),
-)
-status = (
-    ('1', '在读'),
-    ('2', '毕业')
-)
-political_status = (
-    ('1', '中共党员'),
-    ('2', '共青团员'),
-    ('3', '群众'),
-)
-nation = (
-    ('1', '汉族'), ('2', '满族'), ('3', '回族'), ('4', '藏族'), ('5', '维吾尔族'), ('6', '苗族'), ('7', '彝族'),
-    ('8', '壮族'), ('9', '布依族'), ('10', '侗族'), ('11', '瑶族'), ('12', '白族'), ('14', '土家族'),
-    ('15', '哈尼族'), ('16', '哈萨克族'), ('17', '傣族'), ('18', '傈僳族'), ('19', '佤族'), ('20', '畲族'), ('21', '高山族'),
-    ('22', '拉祜族'), ('23', '水族'), ('24', '东乡族'), ('25', '纳西族'), ('26', '景颇族'), ('27', '柯尔克孜族'), ('28', '土族'),
-    ('29', '达斡尔族'), ('30', '仫佬族'), ('31', '羌族'), ('32', '布朗族'), ('33', '撒拉族'), ('34', '毛南族'), ('35', '仡佬族'),
-    ('36', '锡伯族'), ('37', '阿昌族'), ('38', '普米族'), ('39', '朝鲜族'), ('40', '塔吉克族'), ('41', '怒族'), ('42', '乌孜别克族'),
-    ('43', '俄罗斯族'), ('44', '鄂温克族'), ('45', '德昂族'), ('46', '保安族'), ('47', '裕固族'), ('48', '京族'), ('49', '塔塔尔族'),
-    ('50', '独龙族'), ('51', '鄂伦春族'), ('52', '赫哲族'), ('53', '门巴族'), ('54', '珞巴族'), ('55', '基诺族'), ('56', '黎族'),
-)
-language = (
-    ('1', '英语'),
-    ('2', '法语'),
-    ('3', '日语'),
-    ('4', '俄语'),
-)
-academic_title = (
-    ('1', '助教'), ('2', '讲师'),
-    ('3', '副教授'), ('4', '教授'),
-)
-degree = (
-    ('1', '学士'), ('2', '硕士'), ('3', '博士'),
-)
 class Student(models.Model):
 
     '''学生信息表'''
@@ -115,6 +66,8 @@ class Course(models.Model):
     course_pre_id = models.CharField(max_length=20, verbose_name='先修课程号', null=True)
     course_pre_name = models.CharField(max_length=20, verbose_name='先修课程名', null=True)
     course_introduction = models.CharField(max_length=1000, verbose_name='课程介绍')
+    course_scale = models.CharField(max_length=20, verbose_name='平时成绩比例')
+    course_volume = models.CharField(max_length=20, verbose_name='课程容量')
 
     class Meta:
         verbose_name = '课程信息表'
@@ -125,12 +78,14 @@ class SelectCourse(models.Model):
     student_id = models.ForeignKey(to='Student', on_delete=models.DO_NOTHING, verbose_name='学号')
     term = models.CharField(max_length=20, verbose_name='学期')
     course_id = models.ForeignKey(to='Course',  on_delete=models.DO_NOTHING, verbose_name='课程号')
-    student_grade = models.CharField(max_length=20, verbose_name='成绩')
+    teacher_id = models.ForeignKey(to='Teacher', on_delete=models.DO_NOTHING, verbose_name='工号')
+    student_usual_grade = models.CharField(max_length=20, verbose_name='平时成绩')
+    student_final_grade = models.CharField(max_length=20, verbose_name='期末成绩')
 
     class Meta:
         verbose_name = '选课表'
         verbose_name_plural = verbose_name
-        unique_together = ('student_id', 'term', 'course_id',)
+        unique_together = ('student_id', 'term', 'course_id', 'teacher_id')
 
 class CourseArrangement(models.Model):
     '''课程安排表'''
@@ -142,36 +97,10 @@ class CourseArrangement(models.Model):
     location = models.CharField(max_length=20, verbose_name='地点')
     weekday = models.CharField(max_length=20, verbose_name='上课日期')
 
-
     class Meta:
         verbose_name = '课程安排表'
         verbose_name_plural = verbose_name
         unique_together = ('course_id', 'term', 'teacher_id',)
-
-
-class SchoolTerm(models.Model):
-    '''学期表（搁置）'''
-    begin_year = models.CharField(max_length=20, verbose_name='开始年份')
-    end_year = models.CharField(max_length=20, verbose_name='结束年份')
-    number = models.IntegerField(verbose_name='学期号')
-
-    class Meta:
-        verbose_name = '学期表'
-        verbose_name_plural = verbose_name
-        unique_together = ('begin_year', 'end_year', 'number',)
-
-class Message(models.Model):
-    '''消息表(搁置)'''
-    message_id = models.CharField(max_length=20, verbose_name='消息号', primary_key=True, unique=True, db_index=True)
-    student_id = models.ForeignKey(Student, on_delete=models.DO_NOTHING, verbose_name='学号')
-    message_content = models.CharField(max_length=1000, verbose_name='消息内容')
-    message_send_time = models.DateTimeField(auto_now_add=True, verbose_name='发送日期')
-    message_status = models.CharField(max_length=20, verbose_name='消息状态')
-    message_title = models.CharField(max_length=255, verbose_name='消息标题')
-
-    class Meta:
-        verbose_name = '消息表'
-        verbose_name_plural = verbose_name
 
 class Notice(models.Model):
     '''公告表'''
@@ -183,19 +112,6 @@ class Notice(models.Model):
     class Meta:
         verbose_name = '公告表'
         verbose_name_plural = verbose_name
-
-class SelectList(models.Model):
-    '''选课清单表'''
-    major =  models.CharField(max_length=20, verbose_name='专业')
-    term = models.CharField(max_length=20, verbose_name='学期')
-    course_id = models.ForeignKey(Course, on_delete=models.DO_NOTHING, verbose_name='课程号')
-    status = models.CharField(max_length=20, verbose_name='状态')
-    volume = models.IntegerField(verbose_name='容量')
-
-    class Meta:
-        verbose_name = '选课清单表'
-        verbose_name_plural = verbose_name
-        unique_together = ('major', 'term',)
 
 class User(models.Model):
     '''用户登录表'''
@@ -210,4 +126,43 @@ class User(models.Model):
         verbose_name = '用户登录表'
         verbose_name_plural = verbose_name
         unique_together = ('account', 'identity',)
+'''
+class SchoolTerm(models.Model):
+    学期表（搁置）
+    begin_year = models.CharField(max_length=20, verbose_name='开始年份')
+    end_year = models.CharField(max_length=20, verbose_name='结束年份')
+    number = models.IntegerField(verbose_name='学期号')
+
+    class Meta:
+        verbose_name = '学期表'
+        verbose_name_plural = verbose_name
+        unique_together = ('begin_year', 'end_year', 'number',)
+
+class Message(models.Model):
+    消息表(搁置)
+    message_id = models.CharField(max_length=20, verbose_name='消息号', primary_key=True, unique=True, db_index=True)
+    student_id = models.ForeignKey(Student, on_delete=models.DO_NOTHING, verbose_name='学号')
+    message_content = models.CharField(max_length=1000, verbose_name='消息内容')
+    message_send_time = models.DateTimeField(auto_now_add=True, verbose_name='发送日期')
+    message_status = models.CharField(max_length=20, verbose_name='消息状态')
+    message_title = models.CharField(max_length=255, verbose_name='消息标题')
+
+    class Meta:
+        verbose_name = '消息表'
+        verbose_name_plural = verbose_name
+
+class SelectList(models.Model):
+    选课清单表
+    major =  models.CharField(max_length=20, verbose_name='专业')
+    term = models.CharField(max_length=20, verbose_name='学期')
+    course_id = models.ForeignKey(Course, on_delete=models.DO_NOTHING, verbose_name='课程号')
+    status = models.CharField(max_length=20, verbose_name='状态')
+    volume = models.IntegerField(verbose_name='容量')
+
+    class Meta:
+        verbose_name = '选课清单表'
+        verbose_name_plural = verbose_name
+        unique_together = ('major', 'term',)
+'''
+
 
