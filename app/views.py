@@ -9,10 +9,6 @@ LoginUser = None
 UserAccount = None
 
 '''登录相关'''
-
-def hello(request):
-    return HttpResponse("<h1>欢迎来到北京化工大学教务管理系统！</h1>")
-
 def login(request):
     '''登录页面'''
     context = {
@@ -56,20 +52,23 @@ def login_judge(request):
                     notice = Notice.objects.all()
                     for i in Course_information:
                         if int(i.student_total_grade) >= 0:
-                            course_list.append({'term': i.term, 'name': i.course_id.course_name, 'grade': i.student_total_grade})
+                            course_list.append({'term': i.term, 'name': i.course_id.course_name,
+                                                'grade': i.student_total_grade})
                     select = SelectCourse.objects.filter(Q(student_id=user_account) & Q(term=time))
                     print(select)
                     select_list = []
                     for i in select:
                         print('wuhu1')
-                        course = CourseArrangement.objects.get(Q(course_id__course_id=i.course_id.course_id) & Q(term=time) & Q(teacher_id__teacher_id=i.teacher_id.teacher_id))
+                        course = CourseArrangement.objects.get(Q(course_id__course_id=i.course_id.course_id) & Q(
+                            term=time) & Q(teacher_id__teacher_id=i.teacher_id.teacher_id))
                         select_list.append(
                             {'name': course.course_id.course_name, 'week': course.weekday, 'time': course.session,
-                             'location': course.location, 'teacher': course.teacher_id.teacher_name, 'weekday': course.week})
+                             'location': course.location, 'teacher': course.teacher_id.teacher_name,
+                             'weekday': course.week})
                 except:
                     raise Http404
-
-                return render(request, 'student/student_index.html', {'student': LoginUser, 'course_list': course_list, 'notice': notice, 'select_list': select_list})
+                return render(request, 'student/student_index.html', {'student': LoginUser, 'course_list': course_list,
+                                                                      'notice': notice, 'select_list': select_list})
             elif user_identity == "教师":
                 #查教师表
                 AccountID = user_account
@@ -81,7 +80,8 @@ def login_judge(request):
                     course_arrangement = CourseArrangement.objects.filter(teacher_id__teacher_id=user_account)
                 except:
                     raise Http404
-                return render(request, 'teacher/teacher_index.html', {'teacher': LoginUser, 'notice': notice, 'course_arrangement': course_arrangement})
+                return render(request, 'teacher/teacher_index.html', {'teacher': LoginUser, 'notice': notice,
+                                                                      'course_arrangement': course_arrangement})
         else:
             #密码错误
             context = {
@@ -115,107 +115,7 @@ def login_judge(request):
         return render(request, 'login.html', context=context)
     return HttpResponse("404")
 
-'''注册相关'''
-
-def register(request):
-    # 返回用户注册的页面
-    context = {
-        "isPasswordError": False,
-        "isAccountError": False,
-        "isEmailError": False,
-        "isPhoneError": False,
-        "checkedStudent": True,
-    }
-    return render(request, 'register.html', context=context)
-
-def register_judge(request):
-    #注册检查
-    user_account = request.POST['account']
-    user_password = request.POST['password']
-    user_phone = request.POST['phone']
-    user_email = request.POST['email']
-    user_identity = request.POST['identity']
-
-    context = {
-        'Account': user_account,
-        'pwd': user_password,
-        'email': user_email,
-        'phone': user_phone,
-        'isPasswordError': False,
-        'isAccountError': False,
-        'isEmailError': False,
-        'isPhoneError': False,
-        'PasswordError': check_pwd(user_password),
-        'AccountError': check_id(user_account),
-        'EmailError': check_email(user_email),
-        'PhoneError': check_phone(user_phone),
-        'checkedStudent': True,
-    }
-
-    if user_identity == '学生':
-        context['checkedStudent'] = True
-    elif user_identity == '教师':
-        context['checkedStudent'] = False
-    #检查合法性
-    islegal = True
-    if context['PasswordError'] != "":
-        islegal = False
-        context['isPasswordError'] = True
-    if context['AccountError'] != "":
-        islegal = False
-        context['isAccountError'] = True
-    if context['PhoneError'] != "":
-        islegal = False
-        context['isPhoneError'] = True
-    if context['EmailError'] != "":
-        islegal = False
-        context['isEmailError'] = True
-    if not islegal:
-        return render(request, "register.html", context=context)
-
-    search_from_User = User.objects.filter(account=user_account, identity=user_identity)
-
-    if len(search_from_User) > 0:
-        for item in search_from_User:
-            if user_account == item.account:
-                context['isAccountError'] = True
-                context['AccountError'] = "该账号已存在了"
-        return render(request, "register.html", context=context)
-    search_from_User2 = User.objects.filter(Q(phone=user_phone)|Q(email=user_email))
-    if len(search_from_User2) > 0:
-        for item in search_from_User2:
-            if user_phone == item.phone:
-                context['isPhoneError'] = True
-                context['PhoneError'] = '该手机号已被注册'
-            if user_email == item.email:
-                context['isEmailError'] = True
-                context['EmailError'] = '该邮箱已被注册'
-        return render(request, "register.html", context=context) ############
-
-    user = None
-    student = None
-    teacher = None
-    if user_identity == "学生":
-        user = User.objects.create(account=user_account, password=user_password, identity=user_identity, phone=user_phone, email=user_email)
-        student = Student.objects.create(student_id=user_account)
-
-    elif user_identity == "教师":
-        user = User.objects.create(account=user_account, password=user_password, identity=user_identity, phone=user_phone, email=user_email)
-        teacher = Teacher.objects.create(teacher_id=user_account)
-    user.save()
-    if student:
-        student.save()
-    elif teacher:
-        teacher.save()
-    return render(request, "registerSuccess.html")
-
-def register_judge_success(request):
-    return render(request, "registerSuccess.html")
-
 '''学生相关'''
-
-def student_index(request):
-    return render(request, 'student/student_index.html')
 
 def student_information_fix(request, id, status):
     '''学生/教师主页相关链接'''
@@ -224,7 +124,8 @@ def student_information_fix(request, id, status):
         student = Student.objects.get(student_id=id)
         is_fix = False
         user = User.objects.get(Q(account=id) & Q(identity='学生'))
-        return render(request, 'student/student_information_fix.html', {'student': student, 'user': user, 'is_fix': is_fix})
+        return render(request, 'student/student_information_fix.html', {'student': student, 'user': user,
+                                                                        'is_fix': is_fix})
     elif status == 'b':
         student = Student.objects.get(student_id=id)
         year = datetime.now()
@@ -244,8 +145,11 @@ def student_information_fix(request, id, status):
         course_list = []
         for i in select:
             course = CourseArrangement.objects.get(Q(course_id=i.course_id) & Q(term=time))
-            course_list.append({'name': course.course_id.course_name, 'week': course.weekday, 'time': course.session, 'location': course.location, 'teacher': course.teacher_id.teacher_name, 'weekday': course.week})
-        return render(request, 'student/student_schedule.html', {'student': student, 'course': course_list, 'term': term})
+            course_list.append({'name': course.course_id.course_name, 'week': course.weekday, 'time': course.session,
+                                'location': course.location, 'teacher': course.teacher_id.teacher_name,
+                                'weekday': course.week})
+        return render(request, 'student/student_schedule.html', {'student': student, 'course': course_list,
+                                                                 'term': term})
     elif status == 'c':
         student = Student.objects.get(student_id=id)
         grade_list = []
@@ -261,7 +165,8 @@ def student_information_fix(request, id, status):
         select = SelectCourse.objects.filter(Q(student_id=id) & Q(term=time))
         for i in select:
             if int(i.student_total_grade) >= 0:
-                grade_list.append({'id': i.course_id.course_id, 'name': i.course_id.course_name, 'grade': i.student_total_grade, 'college': i.course_id.course_college})
+                grade_list.append({'id': i.course_id.course_id, 'name': i.course_id.course_name,
+                                   'grade': i.student_total_grade, 'college': i.course_id.course_college})
         return render(request, 'student/student_grade.html', {'grade_list': grade_list, 'student': student})
     elif status == 'd':
         notice = Notice.objects.get(notice_id=id)
@@ -287,9 +192,12 @@ def student_information_fix(request, id, status):
             selected = SelectCourse.objects.filter(Q(student_id=id) & Q(term=time))
             for i in selected:
                 count = count + 1
-                selected_list.append({'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name, 'count': count, 'teacher': i.teacher_id})
+                selected_list.append({'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name,
+                                      'count': count, 'teacher': i.teacher_id})
 
-        return render(request, 'student/student_select_course.html', {'course': course, 'student': student, 'is_selected': is_selected, 'selected': selected_list, 'is_select': is_select, 'term': time})
+        return render(request, 'student/student_select_course.html',
+                      {'course': course, 'student': student, 'is_selected': is_selected,
+                       'selected': selected_list, 'is_select': is_select, 'term': time})
     elif status == 'f':
         notice = Notice.objects.get(notice_id=id)
         return render(request, 'teacher/notice.html', {'notice': notice})
@@ -393,7 +301,8 @@ def find_grade(request):
     grade_list = []
     for i in grade:
         if int(i.student_total_grade) > 0:
-            grade_list.append({'id': i.course_id.course_id, 'name': i.course_id.course_name, 'grade': i.student_total_grade, 'college': i.course_id.course_college})
+            grade_list.append({'id': i.course_id.course_id, 'name': i.course_id.course_name,
+                               'grade': i.student_total_grade, 'college': i.course_id.course_college})
     return render(request, 'student/student_grade.html', {'grade_list': grade_list, 'student': student, })
 
 def find_schedule(request):
@@ -408,7 +317,9 @@ def find_schedule(request):
     course_list = []
     for i in select:
         course = CourseArrangement.objects.get(Q(course_id=i.course_id) & Q(term=year_number))
-        course_list.append({'name': course.course_id.course_name, 'week': course.weekday, 'time': course.session, 'location': course.location, 'teacher': course.teacher_id.teacher_name, 'weekday': course.week})
+        course_list.append({'name': course.course_id.course_name, 'week': course.weekday, 'time': course.session,
+                            'location': course.location, 'teacher': course.teacher_id.teacher_name,
+                            'weekday': course.week})
     return render(request, 'student/student_schedule.html', {'student': student, 'course': course_list, 'term': term})
 
 def find_course(request):
@@ -437,8 +348,11 @@ def find_course(request):
             selected = SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time))
             for i in selected:
                 count = count + 1
-                selected_list.append({'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name, 'count': count, 'teacher': i.teacher_id})
-        return render(request, 'student/student_select_course.html', {'student': student, 'course': course, 'selected': selected_list, 'is_selected': is_selected, 'is_select': is_select, 'term': time})
+                selected_list.append({'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name,
+                                      'count': count, 'teacher': i.teacher_id})
+        return render(request, 'student/student_select_course.html',
+                      {'student': student, 'course': course, 'selected': selected_list,
+                       'is_selected': is_selected, 'is_select': is_select, 'term': time})
     elif course_name != '':
         is_selected = False
         if SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time)):
@@ -446,9 +360,12 @@ def find_course(request):
             selected = SelectCourse.objects.filter(Q(student_id=student_id) & Q(term=time))
             for i in selected:
                 count = count + 1
-                selected_list.append({'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name, 'count': count, 'teacher': i.teacher_id})
+                selected_list.append({'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name,
+                                      'count': count, 'teacher': i.teacher_id})
         course = CourseArrangement.objects.filter(Q(course_id__course_name=course_name) & Q(term=time))
-        return render(request, 'student/student_select_course.html', {'student': student, 'course': course, 'selected': selected_list, 'is_selected': is_selected, 'is_select': is_select, 'term': time})
+        return render(request, 'student/student_select_course.html',
+                      {'student': student, 'course': course, 'selected': selected_list,
+                       'is_selected': is_selected, 'is_select': is_select, 'term': time})
     else:
         course = CourseArrangement.objects.filter(term=time)
         is_selected = False
@@ -458,7 +375,8 @@ def find_course(request):
             for i in selected:
                 count = count + 1
                 selected_list.append(
-                    {'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name, 'count': count, 'teacher': i.teacher_id})
+                    {'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name,
+                     'count': count, 'teacher': i.teacher_id})
         return render(request, 'student/student_select_course.html',
                       {'student': student, 'course': course, 'selected': selected_list, 'is_selected': is_selected,
                        'is_select': is_select, 'term': time})
@@ -491,7 +409,8 @@ def select_course(request):
             for i in selected:
                 count = count + 1
                 selected_list.append(
-                    {'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name, 'count': count, 'teacher': i.teacher_id})
+                    {'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name,
+                     'count': count, 'teacher': i.teacher_id})
         return render(request, 'student/student_select_course.html',
                       {'course': course, 'student': student, 'is_selected': is_selected, 'selected': selected_list,
                        'is_select': is_select, 'term': time})
@@ -510,7 +429,8 @@ def select_course(request):
             for i in selected:
                 count = count + 1
                 selected_list.append(
-                    {'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name, 'count': count, 'teacher': i.teacher_id})
+                    {'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name,
+                     'count': count, 'teacher': i.teacher_id})
         return render(request, 'student/student_select_course.html',
                       {'course': course, 'student': student, 'is_selected': is_selected, 'selected': selected_list,
                        'is_select': is_select, 'term': time})
@@ -524,7 +444,8 @@ def cancel_select(request):
     teacher_id = request.POST.get('teaid')
     print(student_id, teacher_id, time, course_id)
     student = Student.objects.get(student_id=student_id)
-    SelectCourse.objects.get(Q(student_id__student_id=student_id) & Q(course_id__course_id=course_id) & Q(term=time) & Q(teacher_id__teacher_id=teacher_id)).delete()
+    SelectCourse.objects.get(Q(student_id__student_id=student_id) & Q(course_id__course_id=course_id) & Q(
+        term=time) & Q(teacher_id__teacher_id=teacher_id)).delete()
     is_select = 3
     course = CourseArrangement.objects.filter(term=time)
     is_selected = False
@@ -536,7 +457,8 @@ def cancel_select(request):
         for i in selected:
             count = count + 1
             selected_list.append(
-                {'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name, 'count': count, 'teacher': i.teacher_id})
+                {'course_id': i.course_id.course_id, 'course_name': i.course_id.course_name,
+                 'count': count, 'teacher': i.teacher_id})
     return render(request, 'student/student_select_course.html',
                   {'course': course, 'student': student, 'is_selected': is_selected, 'selected': selected_list,
                    'is_select': is_select, 'term': time})
@@ -596,7 +518,8 @@ def grade_manage(request):
         Q(course_id__course_id=course_id) & Q(teacher_id__teacher_id=teacher_id) & Q(term=term))
     if action == '学生成绩查询':
         is_submit = False
-        return render(request, 'teacher/grade_manage.html', {'student': student, 'course': course, 'is_submit': is_submit})
+        return render(request, 'teacher/grade_manage.html', {'student': student, 'course': course,
+                                                             'is_submit': is_submit})
     else:
         return render(request, 'teacher/grade_input.html', {'student': student, 'course': course})
 
@@ -609,7 +532,8 @@ def update_grade(request):
     time = request.POST.get('time')
     course = Course.objects.get(course_id=course_id)
     total_grade = (int(course.course_scale)*int(usual_grade)+(100-int(course.course_scale))*int(final_grade))//100
-    select_course = SelectCourse.objects.get(Q(student_id__student_id=student_id) & Q(teacher_id__teacher_id=teacher_id) & Q(course_id__course_id=course_id) & Q(term=time))
+    select_course = SelectCourse.objects.get(Q(student_id__student_id=student_id) & Q(
+        teacher_id__teacher_id=teacher_id) & Q(course_id__course_id=course_id) & Q(term=time))
     select_course.student_usual_grade = usual_grade
     select_course.student_final_grade = final_grade
     select_course.student_total_grade = total_grade
@@ -630,7 +554,8 @@ def find_student(request):
     course_id = request.POST.get('course')
     if student_id != '':
         student = SelectCourse.objects.filter(
-            Q(teacher_id__teacher_id=teacher_id) & Q(term=term) & Q(course_id__course_id=course_id) & Q(student_id__student_id=student_id)).order_by(
+            Q(teacher_id__teacher_id=teacher_id) & Q(term=term) & Q(course_id__course_id=course_id) & Q(
+                student_id__student_id=student_id)).order_by(
             'student_id__student_id', 'student_id__student_class')
         course = CourseArrangement.objects.get(
             Q(course_id__course_id=course_id) & Q(teacher_id__teacher_id=teacher_id) & Q(term=term))
@@ -750,10 +675,14 @@ def admin(request, status):
     degree = ('学士', '硕士', '博士',)
     if status == '1':
         is_add = False
-        return render(request, 'teacher/add_student.html', {'college': college, 'nation': nation, 'language': language, 'sex': sex, 'status': statu, 'political_status': political_status, 'is_add': is_add})
+        return render(request, 'teacher/add_student.html',
+                      {'college': college, 'nation': nation, 'language': language, 'sex': sex,
+                       'status': statu, 'political_status': political_status, 'is_add': is_add})
     elif status == '2':
         is_add = False
-        return render(request, 'teacher/add_teacher.html', {'college': college, 'nation': nation, 'sex': sex, 'political_status': political_status, 'degree': degree, 'academic_title': academic_title, 'is_add': is_add})
+        return render(request, 'teacher/add_teacher.html',
+                      {'college': college, 'nation': nation, 'sex': sex, 'political_status': political_status,
+                       'degree': degree, 'academic_title': academic_title, 'is_add': is_add})
     elif status == '3':
         is_add = False
         return render(request, 'teacher/admin_add_course.html', {'is_add': is_add})
@@ -764,14 +693,16 @@ def admin(request, status):
         x=int(1)
         y=int(9999)
         for i in course:
-            course_list.append({'course_id': i.course_id, 'course_name': i.course_name, 'course_status': i.course_status,
-                                'course_college': i.course_college, 'course_pre_id': i.course_pre_id, 'course_pre_name': i.course_pre_name,
-                                'course_introduction': i.course_introduction, 'course_scale': i.course_scale, 'course_volume': i.course_volume,
-                                'x': x, 'y': y})
+            course_list.append({'course_id': i.course_id, 'course_name': i.course_name,
+                                'course_status': i.course_status, 'course_college': i.course_college,
+                                'course_pre_id': i.course_pre_id, 'course_pre_name': i.course_pre_name,
+                                'course_introduction': i.course_introduction, 'course_scale': i.course_scale,
+                                'course_volume': i.course_volume, 'x': x, 'y': y})
             x=x+1
             y=y+1
         teacher = Teacher.objects.all()
-        return render(request, 'teacher/admin_arrange_course.html', {'is_arrange': is_arrange, 'course': course_list, 'teacher': teacher})
+        return render(request, 'teacher/admin_arrange_course.html', {'is_arrange': is_arrange, 'course': course_list,
+                                                                     'teacher': teacher})
     elif status == '5':
         return render(request, 'teacher/add_notice.html', {'is_add': False})
     elif status == '6':
@@ -845,7 +776,9 @@ def add_student(request):
     User.objects.create(
         account=student_id, password=student_id, identity='学生', phone=phone, email=email, name=student_name,
     )
-    return render(request, 'teacher/add_student.html', {'college': college, 'nation': nation, 'language': language, 'sex': sex, 'status': statu, 'political_status': political_status, 'is_add': is_add})
+    return render(request, 'teacher/add_student.html',
+                  {'college': college, 'nation': nation, 'language': language, 'sex': sex,
+                   'status': statu, 'political_status': political_status, 'is_add': is_add})
 
 def add_teacher(request):
     '''管理员添加教师'''
@@ -904,7 +837,9 @@ def add_teacher(request):
     User.objects.create(
         account=teacher_id, password=teacher_id, identity='教师', phone=phone, email=email, name=teacher_name,
     )
-    return render(request, 'teacher/add_teacher.html', {'college': college, 'nation': nation, 'sex': sex, 'political_status': political_status, 'degree': degree, 'academic_title': academic_title, 'is_add': is_add})
+    return render(request, 'teacher/add_teacher.html',
+                  {'college': college, 'nation': nation, 'sex': sex, 'political_status': political_status,
+                   'degree': degree, 'academic_title': academic_title, 'is_add': is_add})
 
 def arrange_course(request):
     '''管理员安排课程'''
@@ -939,7 +874,8 @@ def arrange_course(request):
                   {'is_arrange': is_arrange, 'course': course_list, 'teacher': tea})
     else:
         is_arrange = 1
-        CourseArrangement.objects.create(course_id=course, term=term, teacher_id=teacher, week=week, weekday=weekday, session=session, location=location)
+        CourseArrangement.objects.create(course_id=course, term=term, teacher_id=teacher, week=week,
+                                         weekday=weekday, session=session, location=location)
         course.course_status = course_status
         course.save()
         cou = Course.objects.all().order_by('course_status')
@@ -968,7 +904,8 @@ def find_arranged_course(request):
         course = CourseArrangement.objects.filter(course_id__course_id=course_id).order_by('term', 'course_id')
         return render(request, 'teacher/control_course.html', {'course': course, 'is_delete': is_delete})
     elif course_name != '':
-        course = CourseArrangement.objects.filter(course_id__course_name__contains=course_name).order_by('term', 'course_id')
+        course = CourseArrangement.objects.filter(course_id__course_name__contains=course_name).order_by(
+            'term', 'course_id')
         return render(request, 'teacher/control_course.html', {'course': course, 'is_delete': is_delete})
     else:
         course = CourseArrangement.objects.all().order_by('term', 'course_id')
@@ -979,9 +916,9 @@ def delete_arranged_course(request):
     term = request.POST.get('term')
     course_id = request.POST.get('cid')
     teacher_id = request.POST.get('tid')
-    CourseArrangement.objects.get(Q(course_id__course_id=course_id) & Q(teacher_id__teacher_id=teacher_id) & Q(term=term)).delete()
-    SelectCourse.objects.filter(Q(course_id__course_id=course_id) & Q(teacher_id__teacher_id=teacher_id) & Q(term=term)).delete()
+    CourseArrangement.objects.get(Q(course_id__course_id=course_id) & Q(teacher_id__teacher_id=teacher_id) & Q(
+        term=term)).delete()
+    SelectCourse.objects.filter(Q(course_id__course_id=course_id) & Q(teacher_id__teacher_id=teacher_id) & Q(
+        term=term)).delete()
     course = CourseArrangement.objects.all().order_by('term', 'course_id')
     return render(request, 'teacher/control_course.html', {'course': course, 'is_delete': is_delete})
-
-

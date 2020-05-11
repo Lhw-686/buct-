@@ -6,12 +6,8 @@ from django.conf.urls import url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('register/', views.register),
     path('login_judge/', views.login_judge),
-    path('register_judge/', views.register_judge),
-    path('register_judge_success/', views.register_judge_success),
     path('', views.login),
-    path('student_index/', views.student_index),
     path('student_information_fix/', views.student_information_fix),
     path('student_submit_fix/', views.student_submit_fix),
     path('teacher_submit_fix/', views.teacher_submit_fix),
