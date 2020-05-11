@@ -28,7 +28,7 @@ class CourseAdmin(admin.ModelAdmin):
                     ]
 
 class SelectCourseAdmin(admin.ModelAdmin):
-    list_display = ['student_id', 'term', 'course_id', 'student_usual_grade', 'student_final_grade', 'student_total_grade']
+    list_display = ['student_id', 'term', 'course_id', 'teacher_id', 'student_usual_grade', 'student_final_grade', 'student_total_grade']
 
 class CourseArrangementAdmin(admin.ModelAdmin):
     list_display = ['course_id', 'term', 'teacher_id',

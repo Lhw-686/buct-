@@ -15,7 +15,7 @@ urlpatterns = [
     path('student_information_fix/', views.student_information_fix),
     path('student_submit_fix/', views.student_submit_fix),
     path('teacher_submit_fix/', views.teacher_submit_fix),
-    url('login_judge/(\d+)(\d+)/$', views.student_information_fix, name='fix'),
+    url('login_judge/(\d+)([a-z])/$', views.student_information_fix, name='fix'),
     path('find_grade/', views.find_grade),
     path('find_schedule/', views.find_schedule),
     path('find_course_schedule/', views.find_course_schedule),
@@ -35,5 +35,7 @@ urlpatterns = [
     path('arrange_course/', views.arrange_course),
     path('find_arranged_course/', views.find_arranged_course),
     path('delete_arranged_course/', views.delete_arranged_course),
+    path('student_change_password/', views.student_change_password),
+    path('teacher_change_password/', views.teacher_change_password),
     url(r'favicon.ico/', RedirectView.as_view(url=r'/static/image/favicon.ico')),
 ]
