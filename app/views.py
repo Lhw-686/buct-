@@ -4,12 +4,11 @@ from django.db.models import Q
 from app.models import *
 from app.templates.formCheck import *
 from datetime import *
-from django import forms
-import time
 AccountID = None
 AccountType = False
 LoginUser = None
 UserAccount = None
+
 '''登录相关'''
 
 def hello(request):
@@ -630,6 +629,7 @@ def find_student(request):
         is_submit = False
         return render(request, 'teacher/grade_manage.html',
                       {'student': student, 'course': course, 'is_submit': is_submit})
+
 '''管理员相关'''
 
 def add_course(request):
@@ -728,7 +728,9 @@ def admin(request, status):
     elif status == '5':
         return render(request, 'teacher/add_notice.html', {'is_add': False})
     elif status == '6':
-        return render(request, 'teacher/control_course.html',)
+        is_delete = False
+        course = CourseArrangement.objects.all().order_by('term', 'course_id')
+        return render(request, 'teacher/control_course.html', {'course': course, 'is_delete': is_delete})
 
 def add_notice(request):
     '''管理员发布通知'''
@@ -884,4 +886,28 @@ def arrange_course(request):
         tea = Teacher.objects.all()
         return render(request, 'teacher/admin_arrange_course.html',
                       {'is_arrange': is_arrange, 'course': cou, 'teacher': tea})
+
+def find_arranged_course(request):
+    is_delete = False
+    course_id = request.POST.get('course_id')
+    course_name = request.POST.get('course_name')
+    if course_id != '':
+        course = CourseArrangement.objects.filter(course_id__course_id=course_id).order_by('term', 'course_id')
+        return render(request, 'teacher/control_course.html', {'course': course, 'is_delete': is_delete})
+    elif course_name != '':
+        course = CourseArrangement.objects.filter(course_id__course_name__contains=course_name).order_by('term', 'course_id')
+        return render(request, 'teacher/control_course.html', {'course': course, 'is_delete': is_delete})
+    else:
+        course = CourseArrangement.objects.all().order_by('term', 'course_id')
+        return render(request, 'teacher/control_course.html', {'course': course, 'is_delete': is_delete})
+
+def delete_arranged_course(request):
+    is_delete = True
+    term = request.POST.get('term')
+    course_id = request.POST.get('cid')
+    teacher_id = request.POST.get('tid')
+    CourseArrangement.objects.get(Q(course_id__course_id=course_id) & Q(teacher_id__teacher_id=teacher_id) & Q(term=term)).delete()
+    course = CourseArrangement.objects.all().order_by('term', 'course_id')
+    return render(request, 'teacher/control_course.html', {'course': course, 'is_delete': is_delete})
+
 
