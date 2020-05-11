@@ -14,6 +14,13 @@
     </style>
 </head>
 <body>
+    {% if is_submit %}
+        <script>
+            window.onload=function () {
+                alert("提交成功！")
+            }
+        </script>
+    {% endif %}
     <div style="background: #0483d4; border: 1px solid #e7e7e7;line-height: 60px; margin-bottom: 15px">
         <img src="{% static 'image/logo_jw_w2.png' %}" style="padding-left: 80px">
         <span style="color: white; font-size: 25px; vertical-align: middle">学生成绩查询</span>
@@ -22,9 +29,11 @@
     <div class="container" style="margin-left: 70px; margin-top: 1px; padding: 0px; margin-right: 70px; width: auto; background-color: white; height: 600px;">
         <div class="row">
             <div class="col-md-12" style="line-height: 70px;border: 1px solid #eeeeee;">
-                <form method="post" action="//" class="form-group form-inline">
+                <form method="post" action="/find_student/" class="form-group form-inline">
                     {% csrf_token %}
-                    <input hidden name="course" value="{{ course }}">
+                    <input hidden name="course" value="{{ course.course_id.course_id }}">
+                    <input hidden name="term" value="{{ course.term }}">
+                    <input hidden name="teaid" value="{{ course.teacher_id.teacher_id }}">
                     <div class="col-md-4 " style="padding-left: 100px">
                         <label>
                             学号:
@@ -79,29 +88,34 @@
                                 <span class="time">{{ i.student_id.student_class }}</span>
                             </td>
                             <td width="20%">
-                                <span class="time">{{ i.student_grade }}</span>
+                                <span class="time">{{ i.student_total_grade }}</span>
                             </td>
                             <td width="20%">
                                 <button class="btn btn-primary btn-sm  btn-group-vertical" data-toggle="modal" data-target="#{{ i.student_id.student_id }}">
-                                    修改
+                                    添加/修改
                                 </button>
-                                <form action="" method="post">
+                                <form action="/update_grade/" method="post">
                                     {% csrf_token %}
+                                    <input name="sid" value="{{ i.student_id.student_id }}" hidden>
+                                    <input name="cid" value="{{ i.course_id.course_id }}" hidden>
+                                    <input name="tid" value="{{ i.teacher_id.teacher_id }}" hidden>
+                                    <input name="time" value="{{ i.term }}" hidden>
                                     <div class="modal fade" id="{{ i.student_id.student_id }}" tabindex="-1" role="dialog" aria-labelledby="{{ i.teacher_id.teacher_id }}" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                     <h4 class="modal-title" id="{{ i.teacher_id.teacher_id }}">
-                                                        修改成绩
+                                                        添加/修改成绩
                                                     </h4>
                                                 </div>
                                                 <div class="modal-body">
-
+                                                    平时成绩({{ i.course_id.course_scale }}%)<input name="usual_grade" placeholder="{{ i.student_usual_grade }}">
+                                                    期末成绩<input name="final_grade" placeholder="{{ i.student_final_grade }}">
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                                    <button type="submit" class="btn btn-primary">提交更改</button>
+                                                    <button type="submit" class="btn btn-primary">提交</button>
                                                 </div>
                                             </div>
                                         </div>

@@ -81,6 +81,7 @@ class SelectCourse(models.Model):
     teacher_id = models.ForeignKey(to='Teacher', on_delete=models.DO_NOTHING, verbose_name='工号')
     student_usual_grade = models.CharField(max_length=20, verbose_name='平时成绩')
     student_final_grade = models.CharField(max_length=20, verbose_name='期末成绩')
+    student_total_grade = models.CharField(max_length=20, verbose_name='总评成绩')
 
     class Meta:
         verbose_name = '选课表'

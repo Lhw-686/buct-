@@ -40,41 +40,38 @@
                 <a href="#" style="color: black">主页</a>
             </li>
             <li class="dropdown">
-               <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: black">
-                    选课
-                    <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu" role="menu">
-                    <li>
-                        <a href="#">自主选课</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: black">
-                    信息维护
-                    <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu" role="menu">
-                    <li>
-                        <a href="" target="_blank" >教师个人信息维护</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: black">
-                    信息查询
+                    教务管理
                     <span class="caret"></span>
                 </a>
                  <ul class="dropdown-menu" role="menu">
                     <li>
-                        <a href="" target="_blank">授课查询</a>
+                        <a href="{% url 'admin' 2 %}" target="_blank">添加教师</a>
                     </li>
                      <li>
-                        <a href="#">学生成绩管理</a>
+                        <a href="{% url 'admin' 1 %}" target="_blank">添加学生</a>
                     </li>
                      <li>
-                        <a href="#"></a>
+                        <a href="{% url 'admin' 3 %}" target="_blank">添加新课</a>
+                    </li>
+                     <li>
+                        <a href="{% url 'admin' 5 %}" target="_blank">发布公告</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: black">
+                    选课控制
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a href="{% url 'admin' 4 %}" target="_blank" >安排课程</a>
+                    </li>
+                </ul>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a href="{% url 'admin' 6 %}" target="_blank" >运行控制</a>
                     </li>
                 </ul>
             </li>
